@@ -67,6 +67,7 @@ implementation
 
 { TDBFuncoes }
 
+
 function TDBFuncoes.AddField(const prTable, prField: String;
   prDataType: TFieldType; prSize: Integer; prRequired: Boolean): Boolean;
 begin
@@ -86,9 +87,42 @@ begin
 
 end;
 
+{-------------------------------------------------------------------------------
+Nome       : AddTable
+Objetivo   : Criar a tabela no banco de dados com um campo padrão ID.
+Retorno    : Boolean.
+Parametros : prTable : String
+               Nome da tabela para criação
+Criado em  : 26/12/2016
+Responsável: Ismael Leandro Faustino
+--------------------------------------------------------------------------------
+Histórico de alteração:
+   - [Responsável] em [Data da alteração]
+        [descrição da alteração]
+-------------------------------------------------------------------------------}
 function TDBFuncoes.AddTable(const prTable: String): Boolean;
+var
+  sSQL : String;
 begin
-
+  Result := False;
+  sSQL := '';
+  if not ExistTable(prTable) then
+  begin
+    try
+      sSQL := sSQL + ' CREATE TABLE "'+UpperCase( prTable )+'" ' ;
+      sSQL := sSQL + ' ( ID BIGINT ) ';
+      ExecSQL(sSQL);
+      try
+        sSQL := 'ALTER TABLE '+ UpperCase(prTable);
+        sSQL := sSQL + ' ADD CONSTRAINT PK_'+UpperCase( prTable );
+        sSQL := sSQL + ' PRIMARY KEY ( ID ) ';
+        ExecSQL(sSQL);
+        Result := True;
+      except
+      end;
+    except
+    end;
+  end;
 end;
 
 function TDBFuncoes.AddUnique(const prUnique, prTable,
