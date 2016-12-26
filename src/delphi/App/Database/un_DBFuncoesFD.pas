@@ -44,11 +44,11 @@ begin
   try
     oQry := TFDQuery.Create(nil);
     try
-      TFDQuery(Result).Connection := FCon;
-      TFDQuery(Result).Close;
-      TFDQuery(Result).SQL.Clear;
-      TFDQuery(Result).SQL.Add(prSQL);
-      TFDQuery(Result).ExecSQL;
+      oQry.Connection := FCon;
+      oQry.Close;
+      oQry.SQL.Clear;
+      oQry.SQL.Add(prSQL);
+      oQry.ExecSQL;
       Result :=  True;
     finally
       oQry.Free;
