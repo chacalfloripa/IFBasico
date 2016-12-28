@@ -67,32 +67,138 @@ implementation
 
 { TDBFuncoes }
 
-
+{-------------------------------------------------------------------------------
+Nome       : AddField
+Objetivo   : Criar um campo em uma tabela no banco de dados.
+Retorno    : Boolean.
+Parametros : prTable : String
+               Nome da tabela para criação
+             prField : String
+               Nome do campo a ser criado.
+             prDataType: TFieldType
+               Tipo do campo a ser criado.
+             prSize: Integer;
+               Tamanho do campo, somente sera usado para campos que exista essa opção.
+             prRequired: Boolean
+               Determina se o campo será de not null no banco de dados.
+Compativel : FB
+Homologado : FD
+Criado em  : 27/12/2016
+Responsável: Ismael Leandro Faustino
+--------------------------------------------------------------------------------
+Histórico de alteração:
+   - [Responsável] em [Data da alteração]
+        [descrição da alteração]
+-------------------------------------------------------------------------------}
 function TDBFuncoes.AddField(const prTable, prField: String;
   prDataType: TFieldType; prSize: Integer; prRequired: Boolean): Boolean;
+var
+  sSQL : String;
 begin
-
+  Result := False;
+  sSQL := '';
+  if not ExistField(prTable, prField) then
+  begin
+    try
+      sSQL := sSQL + ' ALTER TABLE '+UpperCase( prTable )+'' ;
+      sSQL := sSQL + ' ADD '+UpperCase( prField )+' '+UpperCase( getStrSQLFieldType(prDataType, prSize, prRequired) );
+      sSQL := sSQL + ';';
+      ExecSQL(sSQL);
+      Result := True;
+    except
+    end;
+  end;
 end;
 
+{-------------------------------------------------------------------------------
+Nome       : AddFieldFK
+Objetivo   : Cria um campo no banco de dados invocando o método addField e ser
+             o retornar sucesso cria uma foreng key pelo invocando o método
+             addFK.
+Retorno    : Boolean.
+Parametros : prForeignKey : string
+               Nome da chave, se deixa em branco ser gerado um nome aleatorio.
+             prTable : String
+               Nome da tabela para criação
+             prField : String
+               Nome do campo a ser criado.
+             prTableRef : String
+               Tabela que será ser referenciada.
+             prFieldRef : String
+               Campo q será referenciado.
+             prDataType: TFieldType
+               Tipo do campo a ser criado.
+             prSize: Integer;
+               Tamanho do campo, somente sera usado para campos que exista essa opção.
+             prRequired: Boolean
+               Determina se o campo será de not null no banco de dados.
+Compativel : FB
+Homologado : FD
+Criado em  : 27/12/2016
+Responsável: Ismael Leandro Faustino
+--------------------------------------------------------------------------------
+Histórico de alteração:
+   - [Responsável] em [Data da alteração]
+        [descrição da alteração]
+-------------------------------------------------------------------------------}
 function TDBFuncoes.AddFieldFK(const prForeignKey, prTable, prField, prTableRef,
   prFieldRef: String; prDataType: TFieldType; prSize: Integer;
   prRequired: Boolean): Boolean;
 begin
-
+  if addField(prTable, prField, prDataType, prSize, prRequired) then
+    AddFK(prForeignKey, prTable, prField, prTableRef, prFieldRef);
 end;
 
+{-------------------------------------------------------------------------------
+Nome       : AddFieldFK
+Objetivo   : Cria um campo no banco de dados invocando o método addField e ser
+             o retornar sucesso cria uma foreng key pelo invocando o método
+             addFK.
+Retorno    : Boolean.
+Parametros : prForeignKey : string
+               Nome da chave, se deixa em branco ser gerado um nome aleatorio.
+             prTable : String
+               Nome da tabela para criação
+             prField : String
+               Nome do campo a ser criado.
+             prTableRef : String
+               Tabela que será ser referenciada.
+             prFieldRef : String
+               Campo q será referenciado.
+Compativel : FB
+Homologado : FD
+Criado em  : 27/12/2016
+Responsável: Ismael Leandro Faustino
+--------------------------------------------------------------------------------
+Histórico de alteração:
+   - [Responsável] em [Data da alteração]
+        [descrição da alteração]
+-------------------------------------------------------------------------------}
 function TDBFuncoes.AddFK(const prForeignKey, prTable, prField, prTableRef,
   prFieldRef: String): Boolean;
 begin
-
+  if ExistTable(prTable) and
+     ExistTable(prTableRef) then
+  begin
+    if ExistField(prTable, prField) and
+       ExistField(prTableRef, prFieldRef) then
+    begin
+      ExecSQL(' ALTER TABLE '+UpperCase(prTable)+
+              ' ADD CONSTRAINT '+UpperCase(prForeignKey)+
+              ' FOREIGN KEY ('+UpperCase(prField)+') '+
+              ' REFERENCES '+UpperCase(prTableRef)+'('+UpperCase(prFieldRef)+')'+
+              ' USING INDEX IDX_'+UpperCase(prForeignKey));
+    end;
+  end;
 end;
-
 {-------------------------------------------------------------------------------
 Nome       : AddTable
 Objetivo   : Criar a tabela no banco de dados com um campo padrão ID.
 Retorno    : Boolean.
 Parametros : prTable : String
                Nome da tabela para criação
+Compativel : FB
+Homologado : FD
 Criado em  : 26/12/2016
 Responsável: Ismael Leandro Faustino
 --------------------------------------------------------------------------------
@@ -161,6 +267,8 @@ Parametros : prTable : String
                Nome da tabela para verificar
              prField: String
                Nome do campo a ser verificado no banco de dados.
+Compativel : FB
+Homologado : FD
 Criado em  : 26/12/2016
 Responsável: Ismael Leandro Faustino
 --------------------------------------------------------------------------------
@@ -185,6 +293,8 @@ Objetivo   : Verifica se a tabela existe no banco de dados.
 Retorno    : Boolean.
 Parametros : prTable : String
               Nome da tabela a ser verificada.
+Compativel : FB
+Homologado : FD
 Criado em  : 26/12/2016
 Responsável: Ismael Leandro Faustino
 --------------------------------------------------------------------------------
@@ -207,6 +317,8 @@ Nome       : getDateServer
 Objetivo   : Retorna a data atual do servidor.
 Retorno    : TDate.
 Parametros : []
+Compativel : FB
+Homologado : FD
 Criado em  : 26/12/2016
 Responsável: Ismael Leandro Faustino
 --------------------------------------------------------------------------------
@@ -224,6 +336,8 @@ Nome       : getDateTimeServer
 Objetivo   : Retorna a data e hora atual do servidor.
 Retorno    : TDateTime.
 Parametros : []
+Compativel : FB
+Homologado : FD
 Criado em  : 26/12/2016
 Responsável: Ismael Leandro Faustino
 --------------------------------------------------------------------------------
@@ -258,6 +372,8 @@ Parametros : - prDataType : TFieldType
                   Tamanho do campo, usado para campos do tipo texto.
              - prRequired : Boolean
                   Se o campo é obrigatório no dataset.
+Compativel : FB
+Homologado : FD
 Criado em  : 26/12/2016
 Responsável: Ismael Leandro Faustino
 --------------------------------------------------------------------------------
@@ -296,6 +412,8 @@ Nome       : getTimeServer
 Objetivo   : Retorna a hora atual do servidor.
 Retorno    : TTime.
 Parametros : []
+Compativel : FB
+Homologado : FD
 Criado em  : 26/12/2016
 Responsável: Ismael Leandro Faustino
 --------------------------------------------------------------------------------
