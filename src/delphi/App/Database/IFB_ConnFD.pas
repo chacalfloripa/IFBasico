@@ -1,4 +1,4 @@
-unit dm_connect;
+unit IFB_ConnFD;
 
 interface
 
@@ -11,30 +11,26 @@ uses
   FireDAC.DApt, FireDAC.Comp.DataSet;
 
 type
-  Tdtm_connect = class(TDataModule)
-    FDCon_01: TFDConnection;
+  TIFB_ConnFD = class
   private
+    FDCon_01: TFDConnection;
     { Private declarations }
   public
     function connect:Boolean;
     { Public declarations }
   end;
 
-var
-  dtm_connect: Tdtm_connect;
-
 implementation
 
-{%CLASSGROUP 'Vcl.Controls.TControl'}
+{ TIFB_ConnFD }
 
-{$R *.dfm}
-
-{ Tdtm_connect }
-
-function Tdtm_connect.connect: Boolean;
+function TIFB_ConnFD.connect: Boolean;
 begin
   Result := False;
   try
+    if not Assigned(FDCon_01) then
+      FDCon_01 := TFDConnection.Create(nil);
+    //
     FDCon_01.CloneConnection;
     FDCon_01.Params.DriverID := 'FB';
     FDCon_01.Params.Database := 'C:\eSesPark Dev\dados\dados.fdb';
