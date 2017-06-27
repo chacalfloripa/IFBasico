@@ -2,10 +2,44 @@ object frm_main: Tfrm_main
   Left = 0
   Top = 0
   Caption = 'Demo App FMX'
-  ClientHeight = 480
-  ClientWidth = 640
+  ClientHeight = 255
+  ClientWidth = 438
   FormFactor.Width = 320
   FormFactor.Height = 480
   FormFactor.Devices = [Desktop]
   DesignerMasterStyle = 0
+  object btnConnFD_01: TButton
+    Position.X = 8.000000000000000000
+    Position.Y = 8.000000000000000000
+    Size.Width = 129.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 1
+    Text = 'btnConnFD_01'
+  end
+  object btnConnORMBr_01: TButton
+    Position.X = 8.000000000000000000
+    Position.Y = 32.000000000000000000
+    Size.Width = 129.000000000000000000
+    Size.Height = 22.000000000000000000
+    Size.PlatformDefault = False
+    TabOrder = 0
+    Text = 'Conex'#227'o FD_01'
+  end
+  object FDCommand1: TFDCommand
+    Left = 272
+    Top = 144
+  end
+  object FDPhysFBDriverLink1: TFDPhysFBDriverLink
+    Left = 312
+    Top = 88
+  end
+  object FDConnection1: TFDConnection
+    Params.Strings = (
+      'DriverID=FB'
+      'User_Name=sysdba'
+      'Password=masterkey')
+    Left = 152
+    Top = 136
+  end
 end

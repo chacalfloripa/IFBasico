@@ -23,25 +23,18 @@ object Form1: TForm1
     ActivePage = TabSheet1
     Align = alClient
     TabOrder = 0
-    ExplicitWidth = 635
-    ExplicitHeight = 299
     object TabSheet1: TTabSheet
       Caption = 'Database'
-      ExplicitWidth = 627
-      ExplicitHeight = 271
       object PageControl2: TPageControl
         Left = 0
         Top = 41
         Width = 1128
         Height = 479
-        ActivePage = TabSheet3
+        ActivePage = TabSheet2
         Align = alClient
         TabOrder = 0
-        ExplicitTop = 39
         object TabSheet2: TTabSheet
           Caption = 'Fiun'#231#245'es'
-          ExplicitWidth = 619
-          ExplicitHeight = 202
           object lblTesteHora: TLabel
             Left = 175
             Top = 67
@@ -112,7 +105,6 @@ object Form1: TForm1
         object TabSheet3: TTabSheet
           Caption = 'Estrutura de Dados'
           ImageIndex = 1
-          ExplicitLeft = 3
           object GroupBox2: TGroupBox
             Left = 3
             Top = 167
@@ -153,14 +145,14 @@ object Form1: TForm1
               Left = 175
               Top = 39
               Width = 218
-              Height = 34
+              Height = 21
               TabOrder = 1
             end
             object dtExistFieldNomeCampo: TEdit
               Left = 399
               Top = 39
               Width = 234
-              Height = 34
+              Height = 21
               TabOrder = 2
             end
             object Button7: TButton
@@ -229,7 +221,7 @@ object Form1: TForm1
               Left = 175
               Top = 35
               Width = 218
-              Height = 38
+              Height = 21
               TabOrder = 1
             end
             object Button8: TButton
@@ -275,7 +267,6 @@ object Form1: TForm1
         Align = alTop
         BevelOuter = bvNone
         TabOrder = 1
-        ExplicitWidth = 627
         object Button1: TButton
           Left = 3
           Top = 8

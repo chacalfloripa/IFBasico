@@ -265,7 +265,7 @@
         <DCC_ExeOutput>S:\bin\</DCC_ExeOutput>
         <DCC_DcpOutput>S:\build</DCC_DcpOutput>
         <DCC_BplOutput>S:\build</DCC_BplOutput>
-        <DCC_UnitSearchPath>S:\build;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_UnitSearchPath>S:\build;S:\src\delphi\ormbr\Source\;S:\src\delphi\ormbr\Source\Core;S:\src\delphi\ormbr\Source\Criteria;S:\src\delphi\ormbr\Source\Dataset;S:\src\delphi\ormbr\Source\Drivers;S:\src\delphi\ormbr\Source\Objectset;S:\src\delphi\ormbr\Source\Metadata;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
     </PropertyGroup>
     <PropertyGroup Condition="'$(Base_Win64)'!=''">
         <DCC_UsePackage>DBXSqliteDriver;DataSnapServerMidas;DBXDb2Driver;DBXInterBaseDriver;vclactnband;vclFireDAC;DataSnapFireDAC;tethering;FireDACADSDriver;DBXMSSQLDriver;DatasnapConnectorsFreePascal;FireDACMSSQLDriver;vcltouch;vcldb;bindcompfmx;Intraweb;DBXOracleDriver;inetdb;FmxTeeUI;emsedge;fmx;fmxdae;vclib;FireDACDBXDriver;dbexpress;IndyCore;vclx;dsnap;DataSnapCommon;DataSnapConnectors;VCLRESTComponents;vclie;bindengine;DBXMySQLDriver;FireDACOracleDriver;FireDACMySQLDriver;DBXFirebirdDriver;FireDACCommonODBC;DataSnapClient;bindcompdbx;IndyIPCommon;vcl;DBXSybaseASEDriver;IndyIPServer;IndySystem;FireDACDb2Driver;dsnapcon;FireDACMSAccDriver;fmxFireDAC;FireDACInfxDriver;vclimg;TeeDB;emshosting;FireDACPgDriver;ibmonitor;FireDACASADriver;DBXOdbcDriver;FireDACTDataDriver;FMXTee;DbxCommonDriver;ibxpress;Tee;DataSnapServer;xmlrtl;DataSnapNativeClient;fmxobj;vclwinx;ibxbindings;rtl;FireDACDSDriver;DbxClientDriver;DBXSybaseASADriver;CustomIPTransport;vcldsnap;bindcomp;appanalytics;DBXInformixDriver;IndyIPClient;bindcompvcl;TeeUI;dbxcds;VclSmp;adortl;FireDACODBCDriver;DataSnapIndy10ServerTransport;dsnapxml;DataSnapProviderClient;dbrtl;inetdbxpress;FireDACMongoDBDriver;IndyProtocols;fmxase;$(DCC_UsePackage)</DCC_UsePackage>
@@ -320,6 +320,62 @@
         </DCCReference>
         <DCCReference Include="..\Database\IFB_ConnFD.pas"/>
         <DCCReference Include="..\Database\IFB_ConnFIBPlus.pas"/>
+        <DCCReference Include="..\Database\IFB_ConnORMBr.pas"/>
+        <DCCReference Include="..\Generico\IFB_ModelSituacao.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Drivers\ormbr.driver.connection.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Drivers\ormbr.factory.connection.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Drivers\ormbr.factory.interfaces.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Drivers\ormbr.driver.firedac.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Drivers\ormbr.driver.firedac.transaction.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Drivers\ormbr.factory.firedac.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Metadata\ormbr.database.abstract.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Metadata\ormbr.database.factory.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Metadata\ormbr.ddl.commands.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Metadata\ormbr.ddl.generator.firebird.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Metadata\ormbr.ddl.generator.interbase.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Metadata\ormbr.ddl.generator.mssql.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Metadata\ormbr.ddl.generator.mysql.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Metadata\ormbr.ddl.generator.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Metadata\ormbr.ddl.generator.postgresql.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Metadata\ormbr.ddl.generator.sqlite.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Metadata\ormbr.ddl.interfaces.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Metadata\ormbr.ddl.register.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Metadata\ormbr.metadata.db.factory.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Metadata\ormbr.metadata.extract.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Metadata\ormbr.metadata.firebird.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Metadata\ormbr.metadata.interbase.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Metadata\ormbr.metadata.interfaces.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Metadata\ormbr.metadata.mssql.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Metadata\ormbr.metadata.mysql.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Metadata\ormbr.metadata.postgresql.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Metadata\ormbr.metadata.register.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Metadata\ormbr.metadata.sqlite.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Drivers\ormbr.driver.dbexpress.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Drivers\ormbr.driver.dbexpress.transaction.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Drivers\ormbr.factory.dbexpress.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Metadata\ormbr.ddl.generator.absolutedb.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Metadata\ormbr.ddl.generator.oracle.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Metadata\ormbr.metadata.oracle.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Metadata\ormbr.modeldb.compare.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Metadata\ormbr.database.compare.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Metadata\ormbr.database.interfaces.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Core\ormbr.types.database.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Core\ormbr.utils.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Metadata\ormbr.database.mapping.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Core\ormbr.types.mapping.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Core\ormbr.mapping.rttiutils.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Core\ormbr.mapping.attributes.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Core\ormbr.mapping.exceptions.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Core\ormbr.mapping.explorer.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Core\ormbr.mapping.explorerstrategy.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Core\ormbr.mapping.classes.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Core\ormbr.mapping.popular.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Core\ormbr.mapping.register.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Core\ormbr.rtti.helper.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Core\ormbr.types.nullable.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Core\ormbr.mapping.repository.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Metadata\ormbr.metadata.classe.factory.pas"/>
+        <DCCReference Include="..\..\ormbr\Source\Metadata\ormbr.metadata.model.pas"/>
         <BuildConfiguration Include="Release">
             <Key>Cfg_2</Key>
             <CfgParent>Base</CfgParent>
@@ -351,12 +407,6 @@
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
-                <DeployFile LocalName="Win32\Debug\AppFMX.exe" Configuration="Debug" Class="ProjectOutput">
-                    <Platform Name="Win32">
-                        <RemoteName>AppFMX.exe</RemoteName>
-                        <Overwrite>true</Overwrite>
-                    </Platform>
-                </DeployFile>
                 <DeployFile LocalName="OSX32\Debug\AppFMX.info.plist" Configuration="Debug" Class="ProjectOSXInfoPList">
                     <Platform Name="OSX32">
                         <RemoteName>Info.plist</RemoteName>
@@ -365,6 +415,12 @@
                 </DeployFile>
                 <DeployFile LocalName="$(BDS)\Redist\iossimulator\libPCRE.dylib" Class="DependencyModule">
                     <Platform Name="iOSSimulator">
+                        <Overwrite>true</Overwrite>
+                    </Platform>
+                </DeployFile>
+                <DeployFile LocalName="S:\bin\AppFMX.exe" Configuration="Debug" Class="ProjectOutput">
+                    <Platform Name="Win32">
+                        <RemoteName>AppFMX.exe</RemoteName>
                         <Overwrite>true</Overwrite>
                     </Platform>
                 </DeployFile>
