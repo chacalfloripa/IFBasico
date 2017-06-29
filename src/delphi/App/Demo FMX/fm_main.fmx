@@ -26,20 +26,4 @@ object frm_main: Tfrm_main
     TabOrder = 0
     Text = 'Conex'#227'o FD_01'
   end
-  object FDCommand1: TFDCommand
-    Left = 272
-    Top = 144
-  end
-  object FDPhysFBDriverLink1: TFDPhysFBDriverLink
-    Left = 312
-    Top = 88
-  end
-  object FDConnection1: TFDConnection
-    Params.Strings = (
-      'DriverID=FB'
-      'User_Name=sysdba'
-      'Password=masterkey')
-    Left = 152
-    Top = 136
-  end
 end

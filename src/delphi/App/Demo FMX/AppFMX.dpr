@@ -61,7 +61,9 @@ uses
   ormbr.types.nullable in '..\..\ormbr\Source\Core\ormbr.types.nullable.pas',
   ormbr.mapping.repository in '..\..\ormbr\Source\Core\ormbr.mapping.repository.pas',
   ormbr.metadata.classe.factory in '..\..\ormbr\Source\Metadata\ormbr.metadata.classe.factory.pas',
-  ormbr.metadata.model in '..\..\ormbr\Source\Metadata\ormbr.metadata.model.pas';
+  ormbr.metadata.model in '..\..\ormbr\Source\Metadata\ormbr.metadata.model.pas',
+  IFB_Conn in '..\Database\IFB_Conn.pas',
+  IFB_FuncoesINI in '..\Comum\IFB_FuncoesINI.pas';
 
 {$R *.res}
 

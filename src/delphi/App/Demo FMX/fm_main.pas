@@ -16,9 +16,6 @@ type
   Tfrm_main = class(TForm)
     btnConnFD_01: TButton;
     btnConnORMBr_01: TButton;
-    FDCommand1: TFDCommand;
-    FDPhysFBDriverLink1: TFDPhysFBDriverLink;
-    FDConnection1: TFDConnection;
     procedure btnConnFD_01Click(Sender: TObject);
   private
     { Private declarations }
@@ -39,7 +36,7 @@ procedure Tfrm_main.btnConnFD_01Click(Sender: TObject);
 begin
   if not Assigned(ConnFD) then
   begin
-    ConnFD := TIFB_ConnFD.Create;
+    ConnFD := TIFB_ConnFD.Create('CONN_01');
     ConnFD.connect;
   end;
 end;
