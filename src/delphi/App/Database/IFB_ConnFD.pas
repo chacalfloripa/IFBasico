@@ -5,7 +5,7 @@ interface
 uses
   System.SysUtils, System.Classes, FireDAC.Stan.Intf, FireDAC.Stan.Option,
   FireDAC.Stan.Error, FireDAC.UI.Intf, FireDAC.Phys.Intf, FireDAC.Stan.Def,
-  FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys, FireDAC.VCLUI.Wait,
+  FireDAC.Stan.Pool, FireDAC.Stan.Async, FireDAC.Phys,
   FireDAC.Phys.FBDef, FireDAC.Phys.IBBase, FireDAC.Phys.FB, Data.DB,
   FireDAC.Comp.Client, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf,
   FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Stan.ExprFuncs,
@@ -14,7 +14,7 @@ uses
   ormbr.types.database, ormbr.factory.firedac, ormbr.ddl.commands,
   ormbr.database.abstract, ormbr.modeldb.compare, ormbr.database.compare,
   ormbr.database.interfaces, ormbr.dml.generator.sqlite, FireDAC.FMXUI.Wait,
-  FireDAC.Comp.UI, IFB_Conn, IFB_FuncoesINI;
+  FireDAC.Comp.UI, IFB_Conn, IFB_FuncoesINI, IFB_App;
 
 type
   TIFB_ConnFD = class(TIFB_Conn)
@@ -27,6 +27,7 @@ type
     function getUserName: string;
     function getDatabase: string;
     procedure setDatabase(const Value: string);
+    function getDriverORMBr(const Value: string): TDriverName;
     { Private declarations }
   public
     FDConn: TFDConnection;
@@ -58,15 +59,15 @@ begin
     FDConn.Params.Database := Database;
     FDConn.Params.UserName := UserName;
     FDConn.Params.Password := Password;
-    FDConn.Params.Add(oIFB_FuncoesINI.getStringListOfArqINI('..\conf\database.ini', ConnName+'_PARAMS').Text);
+    FDConn.Params.Add(oIFB_FuncoesINI.getStringListOfArqINI(DataBaseFileConf, ConnName+'_PARAMS').Text);
     //
     FDConn.Connected := True;
     //
     if not Assigned(oConn) then
     begin
-      oConn := TFactoryFireDAC.Create(FDConn, dnSQLite);
+      oConn := TFactoryFireDAC.Create(FDConn, getDriverORMBr(DriverID));
       oManager := TModelDbCompare.Create(oConn);
-      oManager.CommandsAutoExecute := True;
+//      oManager.CommandsAutoExecute := True;
       oManager.BuildDatabase;
     end;
     //
@@ -78,42 +79,69 @@ end;
 
 function TIFB_ConnFD.getDatabase: string;
 begin
-  Result := oIFB_FuncoesINI.getINIParam('..\conf\database.ini', ConnName, 'database', '');
+  Result := oIFB_FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'database', '');
+  if Trim(Result) = '' then
+  begin
+    {$IFDEF MSWINDOWS}
+      Result := FIFB_App.AppHome+'data'+PathDelim+'data.db';
+    {$ENDIF MSWINDOWS}
+    {$IFDEF ANDROID}
+      Result := FIFB_App.AppHome+'data'+PathDelim+'data.db';
+      if not DirectoryExists(FIFB_App.AppHome+'data') then
+      begin
+        CreateDir(FIFB_App.AppHome+'data');
+      end;
+    {$ENDIF ANDROID}
+    Database := Result;
+  end;
 end;
 
 function TIFB_ConnFD.getDriver: string;
 begin
-  Result := oIFB_FuncoesINI.getINIParam('..\conf\database.ini', ConnName, 'driverid', '');
+  Result := oIFB_FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'driverid', '');
+  if Trim(Result) = '' then
+  begin
+    Result := 'sqlite';
+    DriverID := Result;
+  end;
+end;
+
+function TIFB_ConnFD.getDriverORMBr(const Value: string): TDriverName;
+begin
+  if Value = 'sqlite' then
+    Result := dnSQLite;
+  if Value = 'fb' then
+    Result := dnFirebird;
 end;
 
 function TIFB_ConnFD.getPassword: string;
 begin
-  Result := oIFB_FuncoesINI.getINIParam('..\conf\database.ini', ConnName, 'password', '');
+  Result := oIFB_FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'password', '');
 end;
 
 function TIFB_ConnFD.getUserName: string;
 begin
-  Result := oIFB_FuncoesINI.getINIParam('..\conf\database.ini', ConnName, 'username', '');
+  Result := oIFB_FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'username', '');
 end;
 
 procedure TIFB_ConnFD.setDatabase(const Value: string);
 begin
-  oIFB_FuncoesINI.setINIParam('..\conf\database.ini', ConnName, 'databse', Value);
+  oIFB_FuncoesINI.setINIParam(DataBaseFileConf, ConnName, 'databse', Value);
 end;
 
 procedure TIFB_ConnFD.setDriver(const Value: string);
 begin
-  oIFB_FuncoesINI.setINIParam('..\conf\database.ini', ConnName, 'driverid', Value);
+  oIFB_FuncoesINI.setINIParam(DataBaseFileConf, ConnName, 'driverid', Value);
 end;
 
 procedure TIFB_ConnFD.setPassword(const Value: string);
 begin
-  oIFB_FuncoesINI.setINIParam('..\conf\database.ini', ConnName, 'password', Value);
+  oIFB_FuncoesINI.setINIParam(DataBaseFileConf, ConnName, 'password', Value);
 end;
 
 procedure TIFB_ConnFD.setUserName(const Value: string);
 begin
-  oIFB_FuncoesINI.setINIParam('..\conf\database.ini', ConnName, 'username', Value);
+  oIFB_FuncoesINI.setINIParam(DataBaseFileConf, ConnName, 'username', Value);
 end;
 
 end.

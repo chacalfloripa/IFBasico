@@ -63,7 +63,12 @@ uses
   ormbr.metadata.classe.factory in '..\..\ormbr\Source\Metadata\ormbr.metadata.classe.factory.pas',
   ormbr.metadata.model in '..\..\ormbr\Source\Metadata\ormbr.metadata.model.pas',
   IFB_Conn in '..\Database\IFB_Conn.pas',
-  IFB_FuncoesINI in '..\Comum\IFB_FuncoesINI.pas';
+  IFB_FuncoesINI in '..\Comum\IFB_FuncoesINI.pas',
+  IFB_App in '..\Comum\IFB_App.pas',
+  ormbr.driver.register in '..\..\ormbr\Source\Core\ormbr.driver.register.pas',
+  ormbr.dml.generator in '..\..\ormbr\Source\Core\ormbr.dml.generator.pas',
+  ormbr.dml.generator.sqlite in '..\..\ormbr\Source\Core\ormbr.dml.generator.sqlite.pas',
+  ormbr.dml.interfaces in '..\..\ormbr\Source\Core\ormbr.dml.interfaces.pas';
 
 {$R *.res}
 
