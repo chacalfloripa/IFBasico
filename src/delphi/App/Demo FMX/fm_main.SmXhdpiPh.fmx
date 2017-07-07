@@ -1,0 +1,15 @@
+inherited frm_main_SmXhdpiPh: Tfrm_main_SmXhdpiPh
+  ClientHeight = 375
+  ClientWidth = 250
+  DesignerMasterStyle = 0
+  inherited btnConnORMBr_01: TButton
+    Size.Width = 185.000000000000000000
+  end
+  inherited btnGetParhHome: TButton
+    Size.Width = 185.000000000000000000
+  end
+  inherited FDMemTable1: TFDMemTable
+    Left = 160
+    Top = 72
+  end
+end

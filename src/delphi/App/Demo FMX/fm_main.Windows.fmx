@@ -1,0 +1,8 @@
+inherited frm_main_Windows: Tfrm_main_Windows
+  ClientHeight = 310
+  ClientWidth = 505
+  DesignerMasterStyle = 0
+  inherited btnGetParhHome: TButton
+    Text = 'Conex'#227'o ORMBr_01'
+  end
+end
