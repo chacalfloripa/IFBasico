@@ -29,11 +29,11 @@ type
     [Restrictions([NoUpdate, NotNull])]
     [Column('ID', ftInteger)]
     [Dictionary('ID','Chave primária da tabela.','0','','',taCenter)]
-    property master_id: Integer Index 0 read Fid write Fid;
+    property id: Integer Index 0 read Fid write Fid;
 
     [Column('NM_SITUACAO', ftString, 60)]
     [Dictionary('NM_SITUACAO','Nome da situação','','','',taLeftJustify)]
-    property description: String Index 1 read FNmSituacao write FNmSituacao;
+    property Nome: String Index 1 read FNmSituacao write FNmSituacao;
   end;
 
 implementation
