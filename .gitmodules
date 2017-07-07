@@ -1,3 +1,6 @@
 [submodule "src/delphi/ormbr"]
 	path = src/delphi/ormbr
 	url = https://bitbucket.org/isaquepinheiro/ormbr.git
+[submodule "src/delphi/MVCBr"]
+	path = src/delphi/MVCBr
+	url = https://github.com/amarildolacerda/MVCBr.git
