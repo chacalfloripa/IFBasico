@@ -27,6 +27,8 @@ type
   public
     FDConn: TFDConnection;
     function connect:Boolean;
+    function getDataSet(const SQL : string):TDataSet; override;
+    procedure ExecSQL(const SQL : string); override;
     property DriverID : string read getDriver write setDriver;
     property Database : string read getDatabase write setDatabase;
     property UserName : string read getUserName write setUserName;
@@ -58,6 +60,24 @@ begin
   end;
 end;
 
+procedure TIFB_ConnFD.ExecSQL(const SQL: string);
+var
+  oQuery : TFDQuery;
+begin
+  inherited;
+  oQuery := TFDQuery.Create(nil);
+  try
+    try
+      oQuery.Connection := FDConn;
+      oQuery.SQL.Text := SQL;
+      oQuery.ExecSQL;
+    except
+    end;
+  finally
+    FreeAndNil(oQuery);
+  end;
+end;
+
 function TIFB_ConnFD.getDatabase: string;
 begin
   Result := oIFB_FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'database', '');
@@ -77,6 +97,14 @@ begin
   end;
 end;
 
+function TIFB_ConnFD.getDataSet(const SQL: string): TDataSet;
+begin
+  Result := TFDQuery.Create(nil);
+  TFDQuery(Result).Connection := FDConn;
+  TFDQuery(Result).SQL.Text := SQL;
+  Result.Open;
+end;
+
 function TIFB_ConnFD.getDriver: string;
 begin
   Result := oIFB_FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'driverid', '');
@@ -85,6 +113,10 @@ begin
     Result := 'sqlite';
     DriverID := Result;
   end;
+  if Result = 'FB' then
+    Driver := 'FB';
+  if Result = 'sqlite' then
+    Driver := 'sqlite';
 end;
 
 function TIFB_ConnFD.getPassword: string;

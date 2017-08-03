@@ -10,15 +10,16 @@ uses
   FireDAC.Phys.Intf, FireDAC.DApt.Intf, FireDAC.Stan.Async, FireDAC.Phys.FBDef,
   FireDAC.UI.Intf, FireDAC.Stan.Def, FireDAC.Stan.Pool, FireDAC.Phys,
   FireDAC.Phys.FB, FireDAC.FMXUI.Wait, Data.DB, FireDAC.Comp.Client,
-  FireDAC.Phys.IBBase, IFB_App, FireDAC.Comp.DataSet;
+  FireDAC.Phys.IBBase, IFB_App, FireDAC.Comp.DataSet, System.Rtti,
+  FMX.Grid.Style, FMX.ScrollBox, FMX.Grid, app;
 
 type
   Tfrm_main = class(TForm)
-    btnConnORMBr_01: TButton;
-    btnGetParhHome: TButton;
-    FDMemTable1: TFDMemTable;
-    procedure btnConnORMBr_01Click(Sender: TObject);
-    procedure btnGetParhHomeClick(Sender: TObject);
+    Button1: TButton;
+    StringGrid1: TStringGrid;
+    colID: TIntegerColumn;
+    colNomeSituacao: TStringColumn;
+    procedure Button1Click(Sender: TObject);
   private
     { Private declarations }
   public
@@ -36,20 +37,19 @@ implementation
 {$R *.Windows.fmx MSWINDOWS}
 {$R *.SmXhdpiPh.fmx ANDROID}
 
-procedure Tfrm_main.btnConnORMBr_01Click(Sender: TObject);
+procedure Tfrm_main.Button1Click(Sender: TObject);
+var
+  oCol : TColumn;
 begin
-  FreeAndNil(ConnFD);
-  if not Assigned(ConnFD) then
+  with oApp.oConn.getDataSet('select * from gen_situacao') do
   begin
-    ConnFD := TIFB_ConnFD.Create('CONN_01');
-    ConnFD.connect;
-    //
+    while not Eof do
+    begin
+      StringGrid1.Cells[0, RecNo-1] := FieldByName('id').AsString;
+      StringGrid1.Cells[1, RecNo-1] := FieldByName('nm_situacao').AsString;
+      Next;
+    end;
   end;
-end;
-
-procedure Tfrm_main.btnGetParhHomeClick(Sender: TObject);
-begin
-  ShowMessage(FIFB_App.AppHome);
 end;
 
 end.

@@ -2,14 +2,14 @@ inherited frm_main_SmXhdpiPh: Tfrm_main_SmXhdpiPh
   ClientHeight = 375
   ClientWidth = 250
   DesignerMasterStyle = 0
-  inherited btnConnORMBr_01: TButton
-    Size.Width = 185.000000000000000000
-  end
-  inherited btnGetParhHome: TButton
-    Size.Width = 185.000000000000000000
-  end
-  inherited FDMemTable1: TFDMemTable
-    Left = 160
-    Top = 72
+  inherited StringGrid1: TStringGrid
+    Viewport.Width = 377.000000000000000000
+    Viewport.Height = 153.000000000000000000
+    inherited colID: TIntegerColumn
+      Size.Width = 50.000000000000000000
+    end
+    inherited colNomeSituacao: TStringColumn
+      Size.Width = 150.000000000000000000
+    end
   end
 end

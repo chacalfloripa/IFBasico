@@ -3,18 +3,32 @@ unit IFB_Conn;
 interface
 
 uses
-  System.SysUtils, System.Classes, IFB_App;
+  System.SysUtils, System.Classes, IFB_App, DB, strUtils;
 
 type
   TIFB_Conn = class
   private
     FConnName: string;
+    FDriver: string;
     procedure setConnName(const Value: string);
     function getDataBaseFileConf: string;
+    function getStrSQLFieldType(const DataType : TFieldType; const Size : Integer = 0;
+                                const Required : Boolean = False):String;
     { Private declarations }
   public
     constructor Create(const ConnName:  string);
+    procedure ExecSQL(const SQL : string); virtual; abstract;
+    function getDataSet(const SQL : string):TDataSet; virtual; abstract;
+    procedure addTable(const TableName: string); overload;
+    procedure addTable(const TableName: string;
+                       const CreatePK : Boolean); overload;
+    procedure addField(const TableName: string;
+                       const FieldName: string;
+                       const FieldType: TFieldType;
+                       const Size : Integer;
+                       const Requerid : Boolean);
     property ConnName : string read FConnName  write setConnName;
+    property Driver : string read FDriver  write FDriver;
     property DataBaseFileConf : string read getDataBaseFileConf;
     { Public declarations }
   end;
@@ -22,6 +36,32 @@ type
 implementation
 
 { TIFB_Conn }
+
+procedure TIFB_Conn.addField(const TableName, FieldName: string;
+  const FieldType: TFieldType; const Size: Integer; const Requerid: Boolean);
+begin
+  ExecSQL('alter table '+TableName+' add '+FieldName+' '+getStrSQLFieldType(FieldType, Size, Requerid) );
+end;
+
+procedure TIFB_Conn.addTable(const TableName: string);
+begin
+  addTable(TableName, True);
+end;
+
+procedure TIFB_Conn.addTable(const TableName: string; const CreatePK: Boolean);
+var
+  sSQL : string;
+begin
+  sSQL := '';
+  sSQL := sSQL + 'create table '+TableName+' ';
+  sSQL := sSQL + ' (id '+getStrSQLFieldType(ftInteger, 0, True)+' ';
+  if CreatePK then
+  begin
+    if Driver = 'sqlite' then
+      sSQL := sSQL + ', PRIMARY KEY(`id`) );';
+  end;
+  ExecSQL(sSQL);
+end;
 
 constructor TIFB_Conn.Create(const ConnName: string);
 begin
@@ -31,6 +71,36 @@ end;
 function TIFB_Conn.getDataBaseFileConf: string;
 begin
   Result := FIFB_App.AppConfPath+PathDelim+'database.ini';
+end;
+
+function TIFB_Conn.getStrSQLFieldType(const DataType: TFieldType; const Size: Integer;
+  const Required: Boolean): String;
+begin
+  if DataType = ftBoolean then
+    Result := 'SMALLINT'+IfThen(Required, ' NOT NULL', '');;
+  if DataType = ftCurrency then
+    Result := 'NUMERIC(12,2)'+IfThen(Required, ' NOT NULL', '');
+  if DataType = ftTime then
+    Result := 'TIME'+IfThen(Required, ' NOT NULL', '');;
+  if DataType = ftDate then
+    Result := 'DATE'+IfThen(Required, ' NOT NULL', '');;
+  if DataType = ftDateTime then
+    Result := 'TIMESTAMP'+IfThen(Required, ' NOT NULL', '');;
+  if DataType = ftInteger then
+  begin
+    Result := 'INTEGER'+IfThen(Required, ' NOT NULL', '');;
+  end;
+  if DataType = ftLargeint then
+    Result := 'BIGINT'+IfThen(Required, ' NOT NULL', '');;
+  if DataType = ftString then
+  begin
+    if Driver = 'FB' then
+      Result := 'VARCHAR('+IntToStr(Size)+') CHARACTER SET ISO8859_1 '+IfThen(Required, 'NOT NULL', '')+' COLLATE PT_BR ';
+    if Driver = 'SQLite' then
+      Result := IfThen(Required, 'NOT NULL', '')+' TEXT ';
+  end;
+  if DataType = ftBlob then
+    Result := 'BLOB SUB_TYPE 1 SEGMENT SIZE 16384 CHARACTER SET ISO8859_1 ';
 end;
 
 procedure TIFB_Conn.setConnName(const Value: string);
