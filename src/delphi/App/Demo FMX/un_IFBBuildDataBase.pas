@@ -24,7 +24,7 @@ uses
 procedure TIFB_BuildDataBase.Build;
 begin
   //
-  oApp.oConn.addTable('GEN_SITUACAO', True);
+  oApp.oConn.addTable('GEN_SITUACAO', True, False);
   oApp.oConn.addField('GEN_SITUACAO', 'NM_SITUACAO', ftString, 50, True);
   //
   with oApp.oConn.getDataSet('select * from gen_situacao') do

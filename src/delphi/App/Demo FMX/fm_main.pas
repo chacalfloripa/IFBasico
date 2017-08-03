@@ -36,6 +36,8 @@ implementation
 {$R *.fmx}
 {$R *.Windows.fmx MSWINDOWS}
 {$R *.SmXhdpiPh.fmx ANDROID}
+{$R *.iPhone55in.fmx IOS}
+{$R *.LgXhdpiPh.fmx ANDROID}
 
 procedure Tfrm_main.Button1Click(Sender: TObject);
 var

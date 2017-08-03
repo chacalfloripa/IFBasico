@@ -21,7 +21,8 @@ type
     function getDataSet(const SQL : string):TDataSet; virtual; abstract;
     procedure addTable(const TableName: string); overload;
     procedure addTable(const TableName: string;
-                       const CreatePK : Boolean); overload;
+                       const CreatePK : Boolean;
+                       const AutoInc : Boolean); overload;
     procedure addField(const TableName: string;
                        const FieldName: string;
                        const FieldType: TFieldType;
@@ -45,20 +46,21 @@ end;
 
 procedure TIFB_Conn.addTable(const TableName: string);
 begin
-  addTable(TableName, True);
+  addTable(TableName, True, True);
 end;
 
-procedure TIFB_Conn.addTable(const TableName: string; const CreatePK: Boolean);
+procedure TIFB_Conn.addTable(const TableName: string; const CreatePK: Boolean;
+  const AutoInc : Boolean);
 var
   sSQL : string;
 begin
   sSQL := '';
   sSQL := sSQL + 'create table '+TableName+' ';
-  sSQL := sSQL + ' (id '+getStrSQLFieldType(ftInteger, 0, True)+' ';
+  sSQL := sSQL + ' (ID '+getStrSQLFieldType(ftInteger, 0, True)+' '+IfThen(AutoInc, ' PRIMARY KEY AUTOINCREMENT); ', '');
   if CreatePK then
   begin
-    if Driver = 'sqlite' then
-      sSQL := sSQL + ', PRIMARY KEY(`id`) );';
+    if (Driver = 'sqlite') and (not AutoInc) then
+      sSQL := sSQL + ', PRIMARY KEY(ID) );';
   end;
   ExecSQL(sSQL);
 end;
@@ -85,7 +87,12 @@ begin
   if DataType = ftDate then
     Result := 'DATE'+IfThen(Required, ' NOT NULL', '');;
   if DataType = ftDateTime then
-    Result := 'TIMESTAMP'+IfThen(Required, ' NOT NULL', '');;
+  begin
+    if Driver = 'FB' then
+      Result := 'TIMESTAMP'+IfThen(Required, ' NOT NULL', '');;
+    if Driver = 'sqlite' then
+      Result := 'REAL';
+  end;
   if DataType = ftInteger then
   begin
     Result := 'INTEGER'+IfThen(Required, ' NOT NULL', '');;
