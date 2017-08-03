@@ -9,11 +9,7 @@ uses
   FireDAC.Phys.FBDef, FireDAC.Phys.IBBase, FireDAC.Phys.FB, Data.DB,
   FireDAC.Comp.Client, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf,
   FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Stan.ExprFuncs,
-  FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef, ormbr.factory.interfaces,
-  ormbr.container.clientdataset, ormbr.container.dataset.interfaces,
-  ormbr.types.database, ormbr.factory.firedac, ormbr.ddl.commands,
-  ormbr.database.abstract, ormbr.modeldb.compare, ormbr.database.compare,
-  ormbr.database.interfaces, ormbr.dml.generator.sqlite, FireDAC.FMXUI.Wait,
+  FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef, FireDAC.FMXUI.Wait,
   FireDAC.Comp.UI, IFB_Conn, IFB_FuncoesINI, IFB_App;
 
 type
@@ -27,11 +23,9 @@ type
     function getUserName: string;
     function getDatabase: string;
     procedure setDatabase(const Value: string);
-    function getDriverORMBr(const Value: string): TDriverName;
     { Private declarations }
   public
     FDConn: TFDConnection;
-    oConn: IDBConnection;
     function connect:Boolean;
     property DriverID : string read getDriver write setDriver;
     property Database : string read getDatabase write setDatabase;
@@ -45,9 +39,6 @@ implementation
 { TIFB_ConnFD }
 
 function TIFB_ConnFD.connect: Boolean;
-var
-  oManager: IDatabaseCompare;
-  cDDL: TDDLCommand;
 begin
   Result := False;
   try
@@ -60,17 +51,7 @@ begin
     FDConn.Params.UserName := UserName;
     FDConn.Params.Password := Password;
     FDConn.Params.Add(oIFB_FuncoesINI.getStringListOfArqINI(DataBaseFileConf, ConnName+'_PARAMS').Text);
-    //
     FDConn.Connected := True;
-    //
-    if not Assigned(oConn) then
-    begin
-      oConn := TFactoryFireDAC.Create(FDConn, getDriverORMBr(DriverID));
-      oManager := TModelDbCompare.Create(oConn);
-//      oManager.CommandsAutoExecute := True;
-      oManager.BuildDatabase;
-    end;
-    //
     Result := FDConn.Connected;
   except
     //
@@ -104,14 +85,6 @@ begin
     Result := 'sqlite';
     DriverID := Result;
   end;
-end;
-
-function TIFB_ConnFD.getDriverORMBr(const Value: string): TDriverName;
-begin
-  if Value = 'sqlite' then
-    Result := dnSQLite;
-  if Value = 'fb' then
-    Result := dnFirebird;
 end;
 
 function TIFB_ConnFD.getPassword: string;
