@@ -91,7 +91,7 @@ begin
     if Driver = 'FB' then
       Result := 'TIMESTAMP'+IfThen(Required, ' NOT NULL', '');;
     if Driver = 'sqlite' then
-      Result := 'REAL';
+      Result := 'DATETIME';
   end;
   if DataType = ftInteger then
   begin
