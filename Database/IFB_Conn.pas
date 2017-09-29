@@ -3,7 +3,7 @@ unit IFB_Conn;
 interface
 
 uses
-  System.SysUtils, System.Classes, IFB_App, DB, strUtils;
+  System.SysUtils, System.Classes, DB, strUtils;
 
 type
   TIFB_Conn = class
@@ -35,6 +35,9 @@ type
   end;
 
 implementation
+
+uses
+  App;
 
 { TIFB_Conn }
 
@@ -72,7 +75,7 @@ end;
 
 function TIFB_Conn.getDataBaseFileConf: string;
 begin
-  Result := FIFB_App.AppConfPath+PathDelim+'database.ini';
+  Result := oApp.AppConfPath+PathDelim+'database.ini';
 end;
 
 function TIFB_Conn.getStrSQLFieldType(const DataType: TFieldType; const Size: Integer;

@@ -10,7 +10,7 @@ uses
   FireDAC.Comp.Client, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf,
   FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Stan.ExprFuncs,
   FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef, FireDAC.FMXUI.Wait,
-  FireDAC.Comp.UI, IFB_Conn, IFB_FuncoesINI, IFB_App;
+  FireDAC.Comp.UI, IFB_Conn, IFB_FuncoesINI;
 
 type
   TIFB_ConnFD = class(TIFB_Conn)
@@ -38,6 +38,8 @@ type
 
 implementation
 
+uses
+  App;
 { TIFB_ConnFD }
 
 function TIFB_ConnFD.connect: Boolean;
@@ -84,13 +86,13 @@ begin
   if Trim(Result) = '' then
   begin
     {$IFDEF MSWINDOWS}
-      Result := FIFB_App.AppHome+'data'+PathDelim+'data.db';
+      Result := oApp.AppHome+'data'+PathDelim+'data.db';
     {$ENDIF MSWINDOWS}
     {$IFDEF ANDROID}
-      Result := FIFB_App.AppHome+'data'+PathDelim+'data.db';
-      if not DirectoryExists(FIFB_App.AppHome+'data') then
+      Result := oApp.AppHome+'data'+PathDelim+'data.db';
+      if not DirectoryExists(oApp.AppHome+'data') then
       begin
-        CreateDir(FIFB_App.AppHome+'data');
+        CreateDir(oApp.AppHome+'data');
       end;
     {$ENDIF ANDROID}
     Database := Result;
