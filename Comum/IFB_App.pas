@@ -25,9 +25,6 @@ type
     { Public declarations }
   end;
 
-var
-  FIFB_App : TIFB_App;
-
 implementation
 
 
@@ -91,11 +88,5 @@ procedure TIFB_App.setAppPath(const Value: string);
 begin
 
 end;
-
-initialization
-  FIFB_App := TIFB_App.Create;
-
-finalization
-  FreeAndNil(FIFB_App);
 
 end.
