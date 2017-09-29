@@ -49,7 +49,7 @@ begin
     if not Assigned(FDConn) then
       FDConn := TFDConnection.Create(nil);
     //
-    FDConn.CloneConnection;
+    FDConn.Connected := False;
     FDConn.Params.DriverID := DriverID;
     FDConn.Params.Database := Database;
     FDConn.Params.UserName := UserName;
