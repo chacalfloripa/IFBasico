@@ -5,6 +5,10 @@ interface
 uses
   System.SysUtils, System.Classes, DB, strUtils;
 
+const
+  ctDriveFB = 'FB';
+  ctDriveSQLite = 'SQLite';
+
 type
   TIFB_Conn = class
   private
@@ -17,6 +21,7 @@ type
     { Private declarations }
   public
     constructor Create(const ConnName:  string);
+    function connect:Boolean; virtual; abstract;
     procedure ExecSQL(const SQL : string); virtual; abstract;
     function getDataSet(const SQL : string):TDataSet; virtual; abstract;
     procedure addTable(const TableName: string); overload;
@@ -28,6 +33,7 @@ type
                        const FieldType: TFieldType;
                        const Size : Integer;
                        const Requerid : Boolean);
+    function getSeq(const prSeqName:string) : Variant;
     property ConnName : string read FConnName  write setConnName;
     property Driver : string read FDriver  write FDriver;
     property DataBaseFileConf : string read getDataBaseFileConf;
@@ -62,7 +68,7 @@ begin
   sSQL := sSQL + ' (ID '+getStrSQLFieldType(ftInteger, 0, True)+' '+IfThen(AutoInc, ' PRIMARY KEY AUTOINCREMENT); ', '');
   if CreatePK then
   begin
-    if (Driver = 'sqlite') and (not AutoInc) then
+    if (Driver = ctDriveSQLite) and (not AutoInc) then
       sSQL := sSQL + ', PRIMARY KEY(ID) );';
   end;
   ExecSQL(sSQL);
@@ -78,6 +84,11 @@ begin
   Result := oApp.AppConfPath+PathDelim+'database.ini';
 end;
 
+function TIFB_Conn.getSeq(const prSeqName: string): Variant;
+begin
+
+end;
+
 function TIFB_Conn.getStrSQLFieldType(const DataType: TFieldType; const Size: Integer;
   const Required: Boolean): String;
 begin
@@ -91,9 +102,9 @@ begin
     Result := 'DATE'+IfThen(Required, ' NOT NULL', '');;
   if DataType = ftDateTime then
   begin
-    if Driver = 'FB' then
+    if Driver = ctDriveFB then
       Result := 'TIMESTAMP'+IfThen(Required, ' NOT NULL', '');;
-    if Driver = 'sqlite' then
+    if Driver = ctDriveSQLite then
       Result := 'DATETIME';
   end;
   if DataType = ftInteger then
@@ -104,9 +115,9 @@ begin
     Result := 'BIGINT'+IfThen(Required, ' NOT NULL', '');;
   if DataType = ftString then
   begin
-    if Driver = 'FB' then
+    if Driver = ctDriveFB then
       Result := 'VARCHAR('+IntToStr(Size)+') CHARACTER SET ISO8859_1 '+IfThen(Required, 'NOT NULL', '')+' COLLATE PT_BR ';
-    if Driver = 'SQLite' then
+    if Driver = ctDriveSQLite then
       Result := IfThen(Required, 'NOT NULL', '')+' TEXT ';
   end;
   if DataType = ftBlob then

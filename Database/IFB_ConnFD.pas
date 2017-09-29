@@ -26,7 +26,7 @@ type
     { Private declarations }
   public
     FDConn: TFDConnection;
-    function connect:Boolean;
+    function connect:Boolean; override;
     function getDataSet(const SQL : string):TDataSet; override;
     procedure ExecSQL(const SQL : string); override;
     property DriverID : string read getDriver write setDriver;
