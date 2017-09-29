@@ -76,12 +76,15 @@ end;
 
 procedure TIFB_App.setAppConfPath(const Value: string);
 begin
-
 end;
 
 procedure TIFB_App.setAppHome(const Value: string);
 begin
-
+  if Trim(Value) = '' then
+  begin
+    FHomePath := Value;
+    CreateDir(FAppPath)
+  end;
 end;
 
 procedure TIFB_App.setAppPath(const Value: string);
