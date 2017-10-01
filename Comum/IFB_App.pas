@@ -34,7 +34,10 @@ function TIFB_App.getAppConfPath: string;
 begin
   if Trim(FAppConfPath) = '' then
   begin
-    FAppConfPath := AppHome+PathDelim+'conf';
+    FAppConfPath := 'conf';
+    if copy(Trim(AppHome), Length(AppHome), 1) <> PathDelim then
+      FAppConfPath := PathDelim+FAppConfPath;
+    FAppConfPath := AppHome+FAppConfPath;
     if not DirectoryExists(FAppConfPath) then
     begin
       CreateDir(FAppConfPath)
