@@ -3,9 +3,9 @@ unit fm_main;
 interface
 
 uses
-  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants, System.Classes, Vcl.Graphics,
-  Vcl.Controls, Vcl.Forms, Vcl.Dialogs, dm_connect, Vcl.StdCtrls, Vcl.ComCtrls,
-  un_DBFuncoesFD, Vcl.ExtCtrls;
+  Winapi.Windows, Winapi.Messages, System.SysUtils, System.Variants,
+  System.Classes, Vcl.Graphics, Vcl.Controls, Vcl.Forms, Vcl.Dialogs,
+  Vcl.StdCtrls, Vcl.ComCtrls, App, un_DBFuncoesFD, Vcl.ExtCtrls;
 
 type
   TForm1 = class(TForm)
@@ -43,8 +43,6 @@ type
     Button11: TButton;
     Button12: TButton;
     procedure Button1Click(Sender: TObject);
-    procedure FormCreate(Sender: TObject);
-    procedure FormDestroy(Sender: TObject);
     procedure Button2Click(Sender: TObject);
     procedure Button3Click(Sender: TObject);
     procedure Button4Click(Sender: TObject);
@@ -54,7 +52,6 @@ type
     function testaConexao : Boolean;
     { Private declarations }
   public
-    dtm_connect : Tdtm_connect;
     FFuncoesFD : TDBFuncoesFD;
     { Public declarations }
   end;
@@ -91,15 +88,7 @@ end;
 
 procedure TForm1.Button1Click(Sender: TObject);
 begin
-  with dtm_connect do
-  begin
-    if connect then
-    begin
-      FFuncoesFD.Driver := 'FD';
-      FFuncoesFD.FCon := dtm_connect.FDCon_01;
-      ShowMessage('Sucesso');
-    end;
-  end;
+  oApp.oConn.connect;
 end;
 
 procedure TForm1.Button2Click(Sender: TObject);
@@ -135,22 +124,10 @@ begin
   end;
 end;
 
-procedure TForm1.FormCreate(Sender: TObject);
-begin
-  dtm_connect := Tdtm_connect.Create(nil);
-  FFuncoesFD := TDBFuncoesFD.Create;
-end;
-
-procedure TForm1.FormDestroy(Sender: TObject);
-begin
-  FFuncoesFD.Free;
-  dtm_connect.Free;
-end;
-
 function TForm1.testaConexao: Boolean;
 begin
   Result := True;
-  if not dtm_connect.FDCon_01.Connected then
+  if not oApp.oConn.connect then
   begin
     Result := False;
     ShowMessage('Não existe uma conexão ativa com o banco de dados.');

@@ -11,8 +11,6 @@ object Form1: TForm1
   Font.Name = 'Tahoma'
   Font.Style = []
   OldCreateOrder = False
-  OnCreate = FormCreate
-  OnDestroy = FormDestroy
   PixelsPerInch = 96
   TextHeight = 13
   object PageControl1: TPageControl
@@ -35,6 +33,7 @@ object Form1: TForm1
         TabOrder = 0
         object TabSheet2: TTabSheet
           Caption = 'Fiun'#231#245'es'
+          ExplicitLeft = 3
           object lblTesteHora: TLabel
             Left = 175
             Top = 67
