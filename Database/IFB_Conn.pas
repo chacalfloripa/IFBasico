@@ -68,7 +68,7 @@ begin
   sSQL := sSQL + ' (ID '+getStrSQLFieldType(ftInteger, 0, True)+' '+IfThen(AutoInc, ' PRIMARY KEY AUTOINCREMENT); ', '');
   if CreatePK then
   begin
-    if (Driver = ctDriveSQLite) and (not AutoInc) then
+    if (UpperCase(Driver) = UpperCase(ctDriveSQLite)) and (not AutoInc) then
       sSQL := sSQL + ', PRIMARY KEY(ID) );';
   end;
   ExecSQL(sSQL);
