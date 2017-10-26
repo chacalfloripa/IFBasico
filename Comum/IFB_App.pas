@@ -43,7 +43,7 @@ begin
       CreateDir(FAppConfPath)
     end;
   end;
-  Result := FHomePath;
+  Result := FAppConfPath;
 end;
 
 function TIFB_App.getAppHome: string;
