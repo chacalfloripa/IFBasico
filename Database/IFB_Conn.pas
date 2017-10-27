@@ -93,23 +93,38 @@ function TIFB_Conn.getStrSQLFieldType(const DataType: TFieldType; const Size: In
   const Required: Boolean): String;
 begin
   if DataType = ftBoolean then
-    Result := 'SMALLINT'+IfThen(Required, ' NOT NULL', '');;
+  begin
+    if Driver = ctDriveFB then
+      Result := 'SMALLINT'+IfThen(Required, ' NOT NULL', '');;
+    if (UpperCase(Driver) = UpperCase(ctDriveSQLite)) then
+      Result := 'BOOLEAN'+IfThen(Required, ' NOT NULL DEFAULT 0 ', '');;
+  end;
   if DataType = ftCurrency then
-    Result := 'NUMERIC(12,2)'+IfThen(Required, ' NOT NULL', '');
+  begin
+    if Driver = ctDriveFB then
+      Result := 'NUMERIC(12,2)'+IfThen(Required, ' NOT NULL', '');
+    if (UpperCase(Driver) = UpperCase(ctDriveSQLite)) then
+      Result := 'NUMERIC'+IfThen(Required, ' NOT NULL  DEFAULT 0 ', '');
+  end;
   if DataType = ftTime then
-    Result := 'TIME'+IfThen(Required, ' NOT NULL', '');;
+  begin
+    if Driver = ctDriveFB then
+      Result := 'TIME'+IfThen(Required, ' NOT NULL', '');
+    if (UpperCase(Driver) = UpperCase(ctDriveSQLite)) then
+      Result := 'DATETIME';
+  end;
   if DataType = ftDate then
     Result := 'DATE'+IfThen(Required, ' NOT NULL', '');;
   if DataType = ftDateTime then
   begin
     if Driver = ctDriveFB then
       Result := 'TIMESTAMP'+IfThen(Required, ' NOT NULL', '');;
-    if Driver = ctDriveSQLite then
+    if (UpperCase(Driver) = UpperCase(ctDriveSQLite)) then
       Result := 'DATETIME';
   end;
   if DataType = ftInteger then
   begin
-    Result := 'INTEGER'+IfThen(Required, ' NOT NULL', '');;
+    Result := 'INTEGER'+IfThen(Required, ' NOT NULL DEFAULT 0 ', '');;
   end;
   if DataType = ftLargeint then
     Result := 'BIGINT'+IfThen(Required, ' NOT NULL', '');;
@@ -117,8 +132,8 @@ begin
   begin
     if Driver = ctDriveFB then
       Result := 'VARCHAR('+IntToStr(Size)+') CHARACTER SET ISO8859_1 '+IfThen(Required, 'NOT NULL', '')+' COLLATE PT_BR ';
-    if Driver = ctDriveSQLite then
-      Result := IfThen(Required, 'NOT NULL', '')+' TEXT ';
+    if (UpperCase(Driver) = UpperCase(ctDriveSQLite)) then
+      Result := ' TEXT ' +  IfThen(Required, 'NOT NULL DEFAULT '''' ', '');
   end;
   if DataType = ftBlob then
     Result := 'BLOB SUB_TYPE 1 SEGMENT SIZE 16384 CHARACTER SET ISO8859_1 ';
