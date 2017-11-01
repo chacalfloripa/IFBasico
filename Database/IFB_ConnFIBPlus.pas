@@ -15,6 +15,7 @@ type
     function connect:Boolean;
     function getDataSet(const SQL : string):TDataSet; override;
     procedure ExecSQL(const SQL : string); override;
+    function connected:Boolean; override;
     { Public declarations }
   end;
 
@@ -39,6 +40,11 @@ begin
   except
     //
   end;
+end;
+
+function TIFB_ConnFIBPlus.connected: Boolean;
+begin
+  Result := FBConn.Connected;
 end;
 
 procedure TIFB_ConnFIBPlus.ExecSQL(const SQL: string);

@@ -22,6 +22,7 @@ type
   public
     constructor Create(const ConnName:  string);
     function connect:Boolean; virtual; abstract;
+    function connected:Boolean; virtual; abstract;
     procedure ExecSQL(const SQL : string); virtual; abstract;
     function getDataSet(const SQL : string):TDataSet; virtual; abstract;
     procedure addTable(const TableName: string); overload;
