@@ -13,7 +13,7 @@ type
   public
     FBConn: TpFIBDatabase;
     function connect:Boolean;
-    function getDataSet(const SQL : string):TDataSet; override;
+    function getDataSet(const TableName : string):TDataSet; override;
     procedure ExecSQL(const SQL : string); override;
     function connected:Boolean; override;
     { Public declarations }
@@ -30,6 +30,7 @@ begin
     if not Assigned(FBConn) then
       FBConn := TpFIBDatabase.Create(nil);
     //
+    Driver := ctDriveFB;
     FBConn.Close;
     FBConn.DBName := oIFB_FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'database', 'C:\IFBasico\dados\dados.fdb');
     FBConn.SQLDialect := StrToInt(oIFB_FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'SQLDialect', '3'));
@@ -73,30 +74,8 @@ begin
   end;
 end;
 
-function TIFB_ConnFIBPlus.getDataSet(const SQL: string): TDataSet;
-var
-  sTable : string;
-  sTemp : string;
-  iCount : Integer;
-  iPos : Integer;
+function TIFB_ConnFIBPlus.getDataSet(const TableName: string): TDataSet;
 begin
-  for iCount := 0 to Length(SQL) do
-  begin
-    if (Copy(SQL, iCount, 6) = ' from ') then
-     begin
-      iPos := iCount+6;
-      Break;
-     end;
-  end;
-  sTemp := Copy(SQL, iPos, Length(SQL));
-  for iCount := 0 to Length(sTemp) do
-  begin
-    if (Copy(sTemp, iCount, iCount+1) = ' ') then
-      Break;
-    sTable := sTable + sTemp[iCount];
-  end;
-  sTable := Trim(sTable);
-  //
   result := TpFIBDataSet.Create(nil);
   //
   TpFIBDataSet(result).DefaultFormats.DateTimeDisplayFormat := 'dd/mm/yyyy hh:mm';
@@ -106,11 +85,13 @@ begin
   TpFIBDataSet(result).Database := FBConn;
   TpFIBDataSet(result).Transaction := TpFIBTransaction.Create(nil);
   TpFIBDataSet(result).Transaction.DefaultDatabase := FBConn;
-  TpFIBDataSet(result).SQLs.SelectSQL.Text  := SQL;
-  TpFIBDataSet(result).SQLs.UpdateSQL.Text  := TpFIBDataSet(result).GenerateSQLText(sTable, 'ID', skModify);
-  TpFIBDataSet(result).SQLs.InsertSQL.Text  := TpFIBDataSet(result).GenerateSQLText(sTable, 'ID', skInsert);
-  TpFIBDataSet(result).SQLs.DeleteSQL.Text  := TpFIBDataSet(result).GenerateSQLText(sTable, 'ID', skDelete);
-  TpFIBDataSet(result).SQLs.RefreshSQL.Text := TpFIBDataSet(result).GenerateSQLText(sTable, 'ID', skRefresh);
+  TpFIBDataSet(result).SQLs.SelectSQL.Text  := 'select * from '+TableName;
+  TpFIBDataSet(result).SQLs.UpdateSQL.Text  := TpFIBDataSet(result).GenerateSQLText(TableName, 'ID', skModify);
+  TpFIBDataSet(result).SQLs.InsertSQL.Text  := TpFIBDataSet(result).GenerateSQLText(TableName, 'ID', skInsert);
+  TpFIBDataSet(result).SQLs.DeleteSQL.Text  := TpFIBDataSet(result).GenerateSQLText(TableName, 'ID', skDelete);
+  TpFIBDataSet(result).SQLs.RefreshSQL.Text := TpFIBDataSet(result).GenerateSQLText(TableName, 'ID', skRefresh);
+  Result.Open;
+  TpFIBDataSet(result).FetchAll;
 end;
 
 end.

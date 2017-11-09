@@ -24,7 +24,7 @@ type
     function connect:Boolean; virtual; abstract;
     function connected:Boolean; virtual; abstract;
     procedure ExecSQL(const SQL : string); virtual; abstract;
-    function getDataSet(const SQL : string):TDataSet; virtual; abstract;
+    function getDataSet(const TableName : string):TDataSet; virtual; abstract;
     procedure addTable(const TableName: string); overload;
     procedure addTable(const TableName: string;
                        const CreatePK : Boolean;
@@ -51,7 +51,7 @@ uses
 procedure TIFB_Conn.addField(const TableName, FieldName: string;
   const FieldType: TFieldType; const Size: Integer; const Requerid: Boolean);
 begin
-  ExecSQL('alter table '+TableName+' add '+FieldName+' '+getStrSQLFieldType(FieldType, Size, Requerid) );
+  ExecSQL('alter table '+UpperCase(TableName)+' add '+UpperCase(FieldName)+' '+getStrSQLFieldType(FieldType, Size, Requerid) );
 end;
 
 procedure TIFB_Conn.addTable(const TableName: string);
@@ -65,14 +65,30 @@ var
   sSQL : string;
 begin
   sSQL := '';
-  sSQL := sSQL + 'create table '+TableName+' ';
-  sSQL := sSQL + ' (ID '+getStrSQLFieldType(ftInteger, 0, True)+' '+IfThen(AutoInc, ' PRIMARY KEY AUTOINCREMENT); ', '');
-  if CreatePK then
+  sSQL := sSQL + 'create table '+UpperCase(TableName)+' ';
+  sSQL := sSQL + ' (ID '+getStrSQLFieldType(ftInteger, 0, True);
+  // SQLite
+  if (UpperCase(Driver) = UpperCase(ctDriveSQLite)) then
   begin
-    if (UpperCase(Driver) = UpperCase(ctDriveSQLite)) and (not AutoInc) then
-      sSQL := sSQL + ', PRIMARY KEY(ID) );';
+    if not AutoInc then
+      sSQL := sSQL + ', PRIMARY KEY(ID) );'
+    else
+      sSQL := sSQL + IfThen(AutoInc, ' PRIMARY KEY AUTOINCREMENT); ', '');
+  end;
+  // Firebird
+  if (UpperCase(Driver) = UpperCase(ctDriveFB)) then
+  begin
+    sSQL := sSQL + '); ';
   end;
   ExecSQL(sSQL);
+  // Firebird
+  if (UpperCase(Driver) = UpperCase(ctDriveFB)) then
+  begin
+    sSQL := ' ALTER TABLE '+ UpperCase(TableName);
+    sSQL := sSQL + ' ADD CONSTRAINT PK_'+UpperCase( TableName );
+    sSQL := sSQL + ' PRIMARY KEY ( ID ); ';
+    ExecSQL(sSQL);
+  end;
 end;
 
 constructor TIFB_Conn.Create(const ConnName: string);
@@ -125,10 +141,14 @@ begin
   end;
   if DataType = ftInteger then
   begin
-    Result := 'INTEGER'+IfThen(Required, ' NOT NULL DEFAULT 0 ', '');;
+    if Driver = ctDriveFB then
+      Result := 'INT'+IfThen(Required, ' NOT NULL', '');
+    if (UpperCase(Driver) = UpperCase(ctDriveSQLite)) then
+      Result := 'INTEGER'+IfThen(Required, ' NOT NULL DEFAULT 0 ', '');
+
   end;
   if DataType = ftLargeint then
-    Result := 'BIGINT'+IfThen(Required, ' NOT NULL', '');;
+    Result := 'BIGINT'+IfThen(Required, ' NOT NULL', '');
   if DataType = ftString then
   begin
     if Driver = ctDriveFB then

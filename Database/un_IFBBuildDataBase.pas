@@ -27,7 +27,7 @@ begin
   oApp.oConn.addTable('GEN_SITUACAO', True, False);
   oApp.oConn.addField('GEN_SITUACAO', 'NM_SITUACAO', ftString, 50, True);
   //
-  with oApp.oConn.getDataSet('select * from gen_situacao') do
+  with oApp.oConn.getDataSet('GEN_SITUACAO') do
   begin
     // Verifica se existe a situação ATIVO.
     if not Locate('id', 1, []) then
