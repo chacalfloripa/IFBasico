@@ -12,7 +12,7 @@ type
     { Private declarations }
   public
     FBConn: TpFIBDatabase;
-    function connect:Boolean;
+    function connect:Boolean; override;
     function getDataSet(const TableName : string):TDataSet; override;
     procedure ExecSQL(const SQL : string); override;
     function connected:Boolean; override;
