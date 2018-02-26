@@ -11,6 +11,7 @@ type
     FHomePath : string;
     FAppPath : string;
     FAppConfPath : string;
+    FAppLibPath : string;
     FSiglaProjeto: string;
     FSiglaEmpresa: string;
     FIDSistema: Word;
@@ -29,10 +30,13 @@ type
     function getDescricaoSistema: string;
     function getNomeLongoSistema: string;
     function getNomeSistema: string;
+    function getLibPath: string;
+    procedure setLibPath(const Value: string);
     { Private declarations }
   public
     property AppHome : string read getAppHome write setAppHome;
     property AppPath : string read getAppPath write setAppPath;
+    property AppLibPath : string read getLibPath write setLibPath;
     property AppConfPath : string read getAppConfPath write setAppConfPath;
     property SiglaEmpresa : string read getSiglaEmpresa write FSiglaEmpresa;
     property SiglaProjeto : string read getSiglaProjeto write FSiglaProjeto;
@@ -107,6 +111,22 @@ begin
   Result := FIDSistema;
 end;
 
+function TIFB_App.getLibPath: string;
+begin
+  if Trim(FAppLibPath) = '' then
+  begin
+    FAppLibPath := 'lib';
+    if copy(Trim(AppHome), Length(AppHome), 1) <> PathDelim then
+      FAppLibPath := PathDelim+FAppLibPath;
+    FAppLibPath := AppHome+FAppLibPath;
+    if not DirectoryExists(FAppLibPath) then
+    begin
+      CreateDir(FAppLibPath)
+    end;
+  end;
+  Result := FAppLibPath;
+end;
+
 function TIFB_App.getNomeLongoSistema: string;
 begin
   Result := FNomeLongoSistema;
@@ -141,6 +161,11 @@ begin
 end;
 
 procedure TIFB_App.setAppPath(const Value: string);
+begin
+
+end;
+
+procedure TIFB_App.setLibPath(const Value: string);
 begin
 
 end;
