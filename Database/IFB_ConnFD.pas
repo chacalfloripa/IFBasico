@@ -10,11 +10,13 @@ uses
   FireDAC.Comp.Client, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf,
   FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Stan.ExprFuncs,
   FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef, FireDAC.FMXUI.Wait,
-  FireDAC.Comp.UI, IFB_Conn, IFB_FuncoesINI;
+  FireDAC.Comp.UI, IFB_Conn, IFB_FuncoesINI, FireDAC.Phys.MySQL;
 
 type
   TIFB_ConnFD = class(TIFB_Conn)
   private
+    FFDDriverLink : TFDPhysDriverLink;
+    FDGUIxWaitCursor : TFDGUIxWaitCursor;
     procedure setDriver(const Value: string);
     procedure setPassword(const Value: string);
     procedure setUserName(const Value: string);
@@ -27,6 +29,7 @@ type
   public
     FDConn: TFDConnection;
     function connect:Boolean; override;
+    function connected:Boolean; override;
     function getDataSet(const SQL : string):TDataSet; override;
     procedure ExecSQL(const SQL : string); override;
     property DriverID : string read getDriver write setDriver;
@@ -47,7 +50,10 @@ begin
   Result := False;
   try
     if not Assigned(FDConn) then
+    begin
       FDConn := TFDConnection.Create(nil);
+      FDGUIxWaitCursor := TFDGUIxWaitCursor.Create(nil);
+    end;
     //
     FDConn.Connected := False;
     FDConn.Params.DriverID := DriverID;
@@ -58,8 +64,14 @@ begin
     FDConn.Connected := True;
     Result := FDConn.Connected;
   except
-    //
   end;
+end;
+
+function TIFB_ConnFD.connected: Boolean;
+begin
+  Result := False;
+  if Assigned(FDConn) then
+    Result := FDConn.Connected;
 end;
 
 procedure TIFB_ConnFD.ExecSQL(const SQL: string);
@@ -116,9 +128,23 @@ begin
     DriverID := Result;
   end;
   if Result = 'FB' then
+  begin
     Driver := 'FB';
+    FFDDriverLink := TFDPhysFBDriverLink.Create(nil);
+    TFDPhysFBDriverLink(FFDDriverLink).VendorHome := oApp.AppLibPath+'\firebird';
+    TFDPhysFBDriverLink(FFDDriverLink).VendorLib := 'fbclient.dll';
+  end;
   if Result = 'sqlite' then
+  begin
     Driver := 'sqlite';
+  end;
+  if Result = 'MYSQL' then
+  begin
+    Driver := 'MYSQL';
+    FFDDriverLink := TFDPhysMySQLDriverLink.Create(nil);
+    TFDPhysMySQLDriverLink(FFDDriverLink).VendorHome := oApp.AppLibPath+'\mysql';
+    TFDPhysMySQLDriverLink(FFDDriverLink).VendorLib := 'libmysql.dll';
+  end;
 end;
 
 function TIFB_ConnFD.getPassword: string;
