@@ -10,7 +10,8 @@ uses
   FireDAC.Comp.Client, FireDAC.Stan.Param, FireDAC.DatS, FireDAC.DApt.Intf,
   FireDAC.DApt, FireDAC.Comp.DataSet, FireDAC.Stan.ExprFuncs,
   FireDAC.Phys.SQLite, FireDAC.Phys.SQLiteDef, FireDAC.FMXUI.Wait,
-  FireDAC.Comp.UI, IFB_Conn, IFB_FuncoesINI, FireDAC.Phys.MySQL;
+  FireDAC.Comp.UI, IFB_Conn, IFB_FuncoesINI, FireDAC.Phys.MySQL,
+  FireDAC.Comp.ScriptCommands, FireDAC.Stan.Util, FireDAC.Comp.Script;
 
 type
   TIFB_ConnFD = class(TIFB_Conn)
@@ -32,6 +33,7 @@ type
     function connected:Boolean; override;
     function getDataSet(const SQL : string):TDataSet; override;
     procedure ExecSQL(const SQL : string); override;
+    procedure ExecScript(const SQLs: array of string); override;
     property DriverID : string read getDriver write setDriver;
     property Database : string read getDatabase write setDatabase;
     property UserName : string read getUserName write setUserName;
@@ -74,6 +76,26 @@ begin
     Result := FDConn.Connected;
 end;
 
+procedure TIFB_ConnFD.ExecScript(const SQLs: array of string);
+var
+  i : integer;
+  oQuery : TFDScript;
+begin
+  inherited;
+  oQuery := TFDScript.Create(nil);
+  try
+    try
+      oQuery.Connection := FDConn;
+      for i := 0 to Length(SQLs)-1 do
+        oQuery.SQLScripts.Add.SQL.Text := SQLs[i];
+      oQuery.ExecuteAll;
+    except
+    end;
+  finally
+    FreeAndNil(oQuery);
+  end;
+end;
+
 procedure TIFB_ConnFD.ExecSQL(const SQL: string);
 var
   oQuery : TFDQuery;
@@ -82,6 +104,7 @@ begin
   oQuery := TFDQuery.Create(nil);
   try
     try
+    FDConn.RefreshMetadataCache();
       oQuery.Connection := FDConn;
       oQuery.SQL.Text := SQL;
       oQuery.ExecSQL;

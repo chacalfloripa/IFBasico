@@ -18,22 +18,29 @@ type
     function getDataBaseFileConf: string;
     function getStrSQLFieldType(const DataType : TFieldType; const Size : Integer = 0;
                                 const Required : Boolean = False):String;
+
     { Private declarations }
   public
     constructor Create(const ConnName:  string);
     function connect:Boolean; virtual; abstract;
     function connected:Boolean; virtual; abstract;
     procedure ExecSQL(const SQL : string); virtual; abstract;
+    procedure ExecScript(const SQLs : array of string); virtual; abstract;
     function getDataSet(const TableName : string):TDataSet; virtual; abstract;
-    procedure addTable(const TableName: string); overload;
+    procedure addTable(const TableName: string); overload;  virtual;
     procedure addTable(const TableName: string;
                        const CreatePK : Boolean;
-                       const AutoInc : Boolean); overload;
+                       const AutoInc : Boolean); overload;  virtual;
     procedure addField(const TableName: string;
                        const FieldName: string;
                        const FieldType: TFieldType;
                        const Size : Integer;
-                       const Requerid : Boolean);
+                       const Requerid : Boolean); virtual;
+    function tableExist(const TableName: String): Boolean;
+    function fieldExist(const TableName: string;
+                        const FieldName: string):Boolean;
+    function triggerExist(const TableName: string;
+                          const TriggerName: string):Boolean;
     function getSeq(const prSeqName:string) : Variant;
     property ConnName : string read FConnName  write setConnName;
     property Driver : string read FDriver  write FDriver;
@@ -96,6 +103,27 @@ begin
   Self.ConnName := ConnName;
 end;
 
+function TIFB_Conn.tableExist(const TableName: String): Boolean;
+begin
+  Result := False;
+  try
+    if Assigned(getDataSet('select ID from '+UpperCase(TableName)+ ' where ID is null ')) then
+      Result := True;
+  except
+  end;
+end;
+
+function TIFB_Conn.fieldExist(const TableName, FieldName: string): Boolean;
+begin
+  Result := False;
+  try
+    if tableExist(TableName) then
+      if Assigned(getDataSet('select '+ UpperCase(FieldName) +' from '+UpperCase(TableName)+ ' where ID is null ')) then
+        Result := True;
+  except
+  end;
+end;
+
 function TIFB_Conn.getDataBaseFileConf: string;
 begin
   Result := oApp.AppConfPath+PathDelim+'database.ini';
@@ -145,7 +173,13 @@ begin
       Result := 'INT'+IfThen(Required, ' NOT NULL', '');
     if (UpperCase(Driver) = UpperCase(ctDriveSQLite)) then
       Result := 'INTEGER'+IfThen(Required, ' NOT NULL DEFAULT 0 ', '');
-
+  end;
+  if DataType = ftSmallint then
+  begin
+    if Driver = ctDriveFB then
+      Result := 'smallint'+IfThen(Required, ' NOT NULL', '');
+    if (UpperCase(Driver) = UpperCase(ctDriveSQLite)) then
+      raise Exception.Create('Tipo ftSmallint não implementado para SQLite.');
   end;
   if DataType = ftLargeint then
     Result := 'BIGINT'+IfThen(Required, ' NOT NULL', '');
@@ -165,4 +199,26 @@ begin
   FConnName := Value;
 end;
 
+function TIFB_Conn.triggerExist(const TableName, TriggerName: string): Boolean;
+var
+  sSQL : string;
+begin
+  if (UpperCase(Driver) = UpperCase(ctDriveFB)) then
+  begin
+    Result := False;
+    sSQL := 'select RDB$TRIGGER_NAME, '+
+            '       RDB$RELATION_NAME '+
+            '  from RDB$TRIGGERS  '+
+            ' where RDB$RELATION_NAME =  '+ QuotedStr(TableName)+
+            '   and RDB$TRIGGER_NAME =  '+ QuotedStr(TriggerName);
+    with getDataSet(sSQL) do
+    begin
+      if not IsEmpty then
+        Result := True;
+      Free;
+    end;
+  end;
+end;
+
 end.
+
