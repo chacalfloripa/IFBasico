@@ -66,7 +66,8 @@ begin
     except
       on E: Exception do
       begin
-        qry_temp.Transaction.Rollback;
+        if qry_temp.Transaction.Active then
+          qry_temp.Transaction.Rollback;
       end;
     end;
   finally
@@ -90,6 +91,7 @@ begin
   TpFIBDataSet(result).SQLs.InsertSQL.Text  := TpFIBDataSet(result).GenerateSQLText(TableName, 'ID', skInsert);
   TpFIBDataSet(result).SQLs.DeleteSQL.Text  := TpFIBDataSet(result).GenerateSQLText(TableName, 'ID', skDelete);
   TpFIBDataSet(result).SQLs.RefreshSQL.Text := TpFIBDataSet(result).GenerateSQLText(TableName, 'ID', skRefresh);
+  TpFIBDataSet(result).AutoCommit := True;
   Result.Open;
   TpFIBDataSet(result).FetchAll;
 end;

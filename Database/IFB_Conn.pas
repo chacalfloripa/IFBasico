@@ -36,6 +36,7 @@ type
                        const FieldType: TFieldType;
                        const Size : Integer;
                        const Requerid : Boolean); virtual;
+	procedure DropTable(const TableName : string);					   
     function tableExist(const TableName: String): Boolean;
     function fieldExist(const TableName: string;
                         const FieldName: string):Boolean;
@@ -101,6 +102,14 @@ end;
 constructor TIFB_Conn.Create(const ConnName: string);
 begin
   Self.ConnName := ConnName;
+end;
+
+procedure TIFB_Conn.DropTable(const TableName: string);
+var
+  sSQL : string;
+begin
+  sSQL := 'drop table '+TableName;
+  ExecSQL(sSQL);
 end;
 
 function TIFB_Conn.tableExist(const TableName: String): Boolean;
@@ -221,4 +230,3 @@ begin
 end;
 
 end.
-

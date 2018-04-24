@@ -29,21 +29,24 @@ begin
   //
   with oApp.oConn.getDataSet('GEN_SITUACAO') do
   begin
-    // Verifica se existe a situação ATIVO.
-    if not Locate('id', 1, []) then
-    begin
-      Append;
-      FieldByName('id').AsInteger := 1;
-      FieldByName('nm_situacao').AsString := 'ATIVO';
-      Post;
-    end;
-    // Verifica se existe a situação EXCLUIDO.
-    if not Locate('id', 2, []) then
-    begin
-      Append;
-      FieldByName('id').AsInteger := 2;
-      FieldByName('nm_situacao').AsString := 'EXCLUIDO';
-      Post;
+    try
+      // Verifica se existe a situação ATIVO.
+      if not Locate('id', 1, []) then
+      begin
+        Append;
+        FieldByName('id').AsInteger := 1;
+        FieldByName('nm_situacao').AsString := 'ATIVO';
+        Post;
+      end;
+      // Verifica se existe a situação EXCLUIDO.
+      if not Locate('id', 2, []) then
+      begin
+        Append;
+        FieldByName('id').AsInteger := 2;
+        FieldByName('nm_situacao').AsString := 'EXCLUIDO';
+        Post;
+      end;
+    except
     end;
   end;
   //
