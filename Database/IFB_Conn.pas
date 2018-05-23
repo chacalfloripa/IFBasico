@@ -27,6 +27,7 @@ type
     procedure ExecSQL(const SQL : string); virtual; abstract;
     procedure ExecScript(const SQLs : array of string); virtual; abstract;
     function getDataSet(const TableName : string):TDataSet; virtual; abstract;
+    function getQuery(const SQL : string):TDataSet; virtual; abstract;
     procedure addTable(const TableName: string); overload;  virtual;
     procedure addTable(const TableName: string;
                        const CreatePK : Boolean;
@@ -36,12 +37,18 @@ type
                        const FieldType: TFieldType;
                        const Size : Integer;
                        const Requerid : Boolean); virtual;
+    function addForeignKey(const ForeignKeyName:String;
+                           const TableName : String;
+                           const FieldName : String;
+                           const TableNameRef : String;
+                           const FieldNameRef : String):Boolean; virtual;
 	procedure DropTable(const TableName : string);					   
     function tableExist(const TableName: String): Boolean;
     function fieldExist(const TableName: string;
                         const FieldName: string):Boolean;
     function triggerExist(const TableName: string;
                           const TriggerName: string):Boolean;
+    function generatorExist(const prGenName: string): Boolean;
     function getSeq(const prSeqName:string) : Variant;
     property ConnName : string read FConnName  write setConnName;
     property Driver : string read FDriver  write FDriver;
@@ -65,6 +72,24 @@ end;
 procedure TIFB_Conn.addTable(const TableName: string);
 begin
   addTable(TableName, True, True);
+end;
+
+function TIFB_Conn.addForeignKey(const ForeignKeyName, TableName, FieldName,
+  TableNameRef, FieldNameRef: String): Boolean;
+begin
+  if tableExist(TableName) and
+     tableExist(TableNameRef) then
+  begin
+    if fieldExist(TableName, FieldName) and
+       fieldExist(TableNameRef, FieldNameRef) then
+    begin
+      ExecSQL(' ALTER TABLE '+UpperCase(TableName)+
+              ' ADD CONSTRAINT '+UpperCase(ForeignKeyName)+
+              ' FOREIGN KEY ('+UpperCase(FieldName)+') '+
+              ' REFERENCES '+UpperCase(TableNameRef)+'('+UpperCase(FieldNameRef)+')'+
+              ' USING INDEX IDX_'+UpperCase(ForeignKeyName));
+    end;
+  end;
 end;
 
 procedure TIFB_Conn.addTable(const TableName: string; const CreatePK: Boolean;
@@ -130,6 +155,28 @@ begin
       if Assigned(getDataSet('select '+ UpperCase(FieldName) +' from '+UpperCase(TableName)+ ' where ID is null ')) then
         Result := True;
   except
+  end;
+end;
+
+function TIFB_Conn.generatorExist(const prGenName: string): Boolean;
+const
+  ctSQLFB = 'select a.RDB$GENERATOR_NAME '+
+            '  from RDB$GENERATORS a '+
+            ' where a.RDB$GENERATOR_NAME = ';
+var
+  qry_temp : TDataSet;
+begin
+  Result := False;
+  if Driver = ctDriveFB then
+  begin
+    qry_temp := getQuery(ctSQLFB+QuotedStr(prGenName));
+    try
+      qry_temp.Open;
+      if not qry_temp.IsEmpty then
+        Result := True;
+    finally
+      FreeAndNil(qry_temp);
+    end;
   end;
 end;
 

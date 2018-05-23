@@ -14,6 +14,7 @@ type
     FBConn: TpFIBDatabase;
     function connect:Boolean; override;
     function getDataSet(const TableName : string):TDataSet; override;
+    function getQuery(const SQL : string):TDataSet; override;
     procedure ExecSQL(const SQL : string); override;
     function connected:Boolean; override;
     { Public declarations }
@@ -91,6 +92,23 @@ begin
   TpFIBDataSet(result).SQLs.InsertSQL.Text  := TpFIBDataSet(result).GenerateSQLText(TableName, 'ID', skInsert);
   TpFIBDataSet(result).SQLs.DeleteSQL.Text  := TpFIBDataSet(result).GenerateSQLText(TableName, 'ID', skDelete);
   TpFIBDataSet(result).SQLs.RefreshSQL.Text := TpFIBDataSet(result).GenerateSQLText(TableName, 'ID', skRefresh);
+  TpFIBDataSet(result).AutoCommit := True;
+  Result.Open;
+  TpFIBDataSet(result).FetchAll;
+end;
+
+function TIFB_ConnFIBPlus.getQuery(const SQL: string): TDataSet;
+begin
+  result := TpFIBDataSet.Create(nil);
+  //
+  TpFIBDataSet(result).DefaultFormats.DateTimeDisplayFormat := 'dd/mm/yyyy hh:mm';
+  TpFIBDataSet(result).DefaultFormats.DisplayFormatDate := 'dd/mm/yyyy';
+  TpFIBDataSet(result).DefaultFormats.DisplayFormatTime := 'hh:mm';
+  //
+  TpFIBDataSet(result).Database := FBConn;
+  TpFIBDataSet(result).Transaction := TpFIBTransaction.Create(nil);
+  TpFIBDataSet(result).Transaction.DefaultDatabase := FBConn;
+  TpFIBDataSet(result).SQLs.SelectSQL.Text  := SQL;
   TpFIBDataSet(result).AutoCommit := True;
   Result.Open;
   TpFIBDataSet(result).FetchAll;
