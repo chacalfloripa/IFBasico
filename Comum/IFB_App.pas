@@ -3,7 +3,7 @@ unit IFB_App;
 interface
 
 uses
-  System.SysUtils, System.Classes, System.IOUtils, IFB_FuncoesINI;
+  System.SysUtils, System.Classes, System.IOUtils, IFB_FuncoesINI, Forms;
 
 type
   TIFB_App = class
@@ -75,7 +75,7 @@ begin
   if Trim(FHomePath) = '' then
   begin
     {$IFDEF MSWINDOWS}
-      FHomePath := ExtractFilePath(GetCurrentDir);
+      FHomePath := ExtractFileDir(ExcludeTrailingBackslash(ExtractFilePath(Application.ExeName )));
     {$ENDIF MSWINDOWS}
     {$IFDEF ANDROID}
       FHomePath := ExtractFilePath(TPath.GetPublicPath);
