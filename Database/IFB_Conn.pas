@@ -42,14 +42,17 @@ type
                            const FieldName : String;
                            const TableNameRef : String;
                            const FieldNameRef : String):Boolean; virtual;
-	procedure DropTable(const TableName : string);					   
+	  procedure DropTable(const TableName : string);
+    procedure setFieldPrimaryKey(const TableName: string;
+                                 const FieldName: string);
     function tableExist(const TableName: String): Boolean;
     function fieldExist(const TableName: string;
                         const FieldName: string):Boolean;
     function triggerExist(const TableName: string;
                           const TriggerName: string):Boolean;
-    function generatorExist(const prGenName: string): Boolean;
-    function getSeq(const prSeqName:string) : Variant;
+    function generatorExist(const GenName: string): Boolean;
+    function primaryKeyExist(const PrimaryKeyName: string): Boolean;
+    function getSeq(const SeqName:string) : Variant;
     property ConnName : string read FConnName  write setConnName;
     property Driver : string read FDriver  write FDriver;
     property DataBaseFileConf : string read getDataBaseFileConf;
@@ -118,7 +121,7 @@ begin
   if (UpperCase(Driver) = UpperCase(ctDriveFB)) then
   begin
     sSQL := ' ALTER TABLE '+ UpperCase(TableName);
-    sSQL := sSQL + ' ADD CONSTRAINT PK_'+UpperCase( TableName );
+    sSQL := sSQL + ' ADD CONSTRAINT PK_'+UpperCase( TableName )+'_ID';
     sSQL := sSQL + ' PRIMARY KEY ( ID ); ';
     ExecSQL(sSQL);
   end;
@@ -141,8 +144,12 @@ function TIFB_Conn.tableExist(const TableName: String): Boolean;
 begin
   Result := False;
   try
-    if Assigned(getDataSet('select ID from '+UpperCase(TableName)+ ' where ID is null ')) then
-      Result := True;
+    with getQuery('select RDB$RELATION_NAME from RDB$RELATIONS where RDB$RELATION_NAME = '+QuotedStr(UpperCase(TableName))) do
+    begin
+      if not IsEmpty then
+        Result := True;
+      Free;
+    end;
   except
   end;
 end;
@@ -152,13 +159,13 @@ begin
   Result := False;
   try
     if tableExist(TableName) then
-      if Assigned(getDataSet('select '+ UpperCase(FieldName) +' from '+UpperCase(TableName)+ ' where ID is null ')) then
+      if Assigned(getQuery('select '+ UpperCase(FieldName) +' from '+UpperCase(TableName)+ ' where ID is null ')) then
         Result := True;
   except
   end;
 end;
 
-function TIFB_Conn.generatorExist(const prGenName: string): Boolean;
+function TIFB_Conn.generatorExist(const GenName: string): Boolean;
 const
   ctSQLFB = 'select a.RDB$GENERATOR_NAME '+
             '  from RDB$GENERATORS a '+
@@ -169,7 +176,7 @@ begin
   Result := False;
   if Driver = ctDriveFB then
   begin
-    qry_temp := getQuery(ctSQLFB+QuotedStr(prGenName));
+    qry_temp := getQuery(ctSQLFB+QuotedStr(GenName));
     try
       qry_temp.Open;
       if not qry_temp.IsEmpty then
@@ -185,7 +192,7 @@ begin
   Result := oApp.AppConfPath+PathDelim+'database.ini';
 end;
 
-function TIFB_Conn.getSeq(const prSeqName: string): Variant;
+function TIFB_Conn.getSeq(const SeqName: string): Variant;
 begin
 
 end;
@@ -250,9 +257,31 @@ begin
     Result := 'BLOB SUB_TYPE 1 SEGMENT SIZE 16384 CHARACTER SET ISO8859_1 ';
 end;
 
+function TIFB_Conn.primaryKeyExist(const PrimaryKeyName: string): Boolean;
+begin
+
+end;
+
 procedure TIFB_Conn.setConnName(const Value: string);
 begin
   FConnName := Value;
+end;
+
+procedure TIFB_Conn.setFieldPrimaryKey(const TableName, FieldName: string);
+var
+  sText : String;
+begin
+  sText := '';
+  if fieldExist(TableName, FieldName) then
+  begin
+    try
+      sText := 'ALTER TABLE '+ UpperCase(TableName);
+      sText := sText + ' ADD CONSTRAINT PK_'+UpperCase( TableName )+'_ID';
+      sText := sText + ' PRIMARY KEY ( '+FieldName+' ) ';
+      ExecSQL(sText);
+    except
+    end;
+  end;
 end;
 
 function TIFB_Conn.triggerExist(const TableName, TriggerName: string): Boolean;
