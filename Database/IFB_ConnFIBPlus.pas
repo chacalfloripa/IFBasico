@@ -4,7 +4,8 @@ interface
 
 uses
   System.SysUtils, System.Classes, DB, IFB_Conn, IFB_FuncoesINI,
-  FIBDatabase, pFIBDatabase, FIBQuery, pFIBQuery, FIBDataSet, pFIBDataSet;
+  FIBDatabase, pFIBDatabase, FIBQuery, pFIBQuery, FIBDataSet, pFIBDataSet,
+  pFIBScripter;
 
 type
   TIFB_ConnFIBPlus = class(TIFB_Conn)
@@ -12,10 +13,12 @@ type
     { Private declarations }
   public
     FBConn: TpFIBDatabase;
+    FDefTrans : TpFIBTransaction;
     function connect:Boolean; override;
     function getDataSet(const TableName : string):TDataSet; override;
     function getQuery(const SQL : string):TDataSet; override;
     procedure ExecSQL(const SQL : string); override;
+    procedure ExecScript(const SQLs : array of string); override;
     function connected:Boolean; override;
     { Public declarations }
   end;
@@ -30,9 +33,15 @@ begin
   try
     if not Assigned(FBConn) then
       FBConn := TpFIBDatabase.Create(nil);
+    if not Assigned(FDefTrans) then
+    begin
+      FDefTrans := TpFIBTransaction.Create(nil);
+      FDefTrans.DefaultDatabase := FBConn;
+    end;
     //
     Driver := ctDriveFB;
     FBConn.Close;
+    FBConn.DefaultTransaction := FDefTrans;
     FBConn.DBName := oIFB_FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'database', 'C:\IFBasico\dados\dados.fdb');
     FBConn.SQLDialect := StrToInt(oIFB_FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'SQLDialect', '3'));
     FBConn.LibraryName := oIFB_FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'LibraryName', '');
@@ -49,6 +58,27 @@ begin
   Result := FBConn.Connected;
 end;
 
+procedure TIFB_ConnFIBPlus.ExecScript(const SQLs: array of string);
+var
+  oSQLScript : TpFIBScripter;
+  i : Integer;
+begin
+  inherited;
+  try
+    oSQLScript := TpFIBScripter.Create(nil);
+    try
+      //
+      oSQLScript.Database := FBConn;
+      for i := 0 to Length(SQLs)-1 do
+        oSQLScript.Script.Add(SQLs[i]);
+      oSQLScript.ExecuteScript();
+    except
+    end;
+  finally
+    FreeAndNil(oSQLScript);
+  end;
+end;
+
 procedure TIFB_ConnFIBPlus.ExecSQL(const SQL: string);
 var
   qry_temp : TpFIBQuery;
@@ -58,8 +88,6 @@ begin
   try
     try
       qry_temp.Database := FBConn;
-      qry_temp.Transaction := TpFIBTransaction.Create(nil);
-      qry_temp.Transaction.DefaultDatabase := FBConn;
       qry_temp.SQL.Add(SQL);
       qry_temp.Transaction.StartTransaction;
       qry_temp.ExecQuery;
@@ -68,10 +96,12 @@ begin
       on E: Exception do
       begin
         if qry_temp.Transaction.Active then
-          qry_temp.Transaction.Rollback;
+          if qry_temp.Transaction.InTransaction then
+            qry_temp.Transaction.Rollback;
       end;
     end;
   finally
+     qry_temp.Close;
      FreeAndNil(qry_temp);
   end;
 end;
@@ -85,8 +115,6 @@ begin
   TpFIBDataSet(result).DefaultFormats.DisplayFormatTime := 'hh:mm';
   //
   TpFIBDataSet(result).Database := FBConn;
-  TpFIBDataSet(result).Transaction := TpFIBTransaction.Create(nil);
-  TpFIBDataSet(result).Transaction.DefaultDatabase := FBConn;
   TpFIBDataSet(result).SQLs.SelectSQL.Text  := 'select * from '+TableName;
   TpFIBDataSet(result).SQLs.UpdateSQL.Text  := TpFIBDataSet(result).GenerateSQLText(TableName, 'ID', skModify);
   TpFIBDataSet(result).SQLs.InsertSQL.Text  := TpFIBDataSet(result).GenerateSQLText(TableName, 'ID', skInsert);
@@ -106,8 +134,6 @@ begin
   TpFIBDataSet(result).DefaultFormats.DisplayFormatTime := 'hh:mm';
   //
   TpFIBDataSet(result).Database := FBConn;
-  TpFIBDataSet(result).Transaction := TpFIBTransaction.Create(nil);
-  TpFIBDataSet(result).Transaction.DefaultDatabase := FBConn;
   TpFIBDataSet(result).SQLs.SelectSQL.Text  := SQL;
   TpFIBDataSet(result).AutoCommit := True;
   Result.Open;

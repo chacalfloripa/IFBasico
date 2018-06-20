@@ -14,6 +14,7 @@ type
   private
     FConnName: string;
     FDriver: string;
+    FCreateIDLargeint: Boolean;
     procedure setConnName(const Value: string);
     function getDataBaseFileConf: string;
     function getStrSQLFieldType(const DataType : TFieldType; const Size : Integer = 0;
@@ -45,17 +46,22 @@ type
 	  procedure DropTable(const TableName : string);
     procedure setFieldPrimaryKey(const TableName: string;
                                  const FieldName: string);
+    procedure setDefaultValue(const TableName: string;
+                              const FieldName: string;
+                              const Value : string);
     function tableExist(const TableName: String): Boolean;
     function fieldExist(const TableName: string;
                         const FieldName: string):Boolean;
     function triggerExist(const TableName: string;
                           const TriggerName: string):Boolean;
+    function ForeignKeyExist(const ForeignKeyName: String): Boolean;
     function generatorExist(const GenName: string): Boolean;
     function primaryKeyExist(const PrimaryKeyName: string): Boolean;
     function getSeq(const SeqName:string) : Variant;
     property ConnName : string read FConnName  write setConnName;
     property Driver : string read FDriver  write FDriver;
     property DataBaseFileConf : string read getDataBaseFileConf;
+    property CreateIDLargeint : Boolean read FCreateIDLargeint write FCreateIDLargeint;
     { Public declarations }
   end;
 
@@ -80,17 +86,20 @@ end;
 function TIFB_Conn.addForeignKey(const ForeignKeyName, TableName, FieldName,
   TableNameRef, FieldNameRef: String): Boolean;
 begin
-  if tableExist(TableName) and
-     tableExist(TableNameRef) then
+  if not ForeignKeyExist(ForeignKeyName) then
   begin
-    if fieldExist(TableName, FieldName) and
-       fieldExist(TableNameRef, FieldNameRef) then
+    if tableExist(TableName) and
+       tableExist(TableNameRef) then
     begin
-      ExecSQL(' ALTER TABLE '+UpperCase(TableName)+
-              ' ADD CONSTRAINT '+UpperCase(ForeignKeyName)+
-              ' FOREIGN KEY ('+UpperCase(FieldName)+') '+
-              ' REFERENCES '+UpperCase(TableNameRef)+'('+UpperCase(FieldNameRef)+')'+
-              ' USING INDEX IDX_'+UpperCase(ForeignKeyName));
+      if fieldExist(TableName, FieldName) and
+         fieldExist(TableNameRef, FieldNameRef) then
+      begin
+        ExecSQL(' ALTER TABLE '+UpperCase(TableName)+
+                    ' ADD CONSTRAINT '+UpperCase(ForeignKeyName)+
+                    ' FOREIGN KEY ('+UpperCase(FieldName)+') '+
+                    ' REFERENCES '+UpperCase(TableNameRef)+'('+UpperCase(FieldNameRef)+')'+
+                    ' USING INDEX IDX_'+UpperCase(ForeignKeyName));
+      end;
     end;
   end;
 end;
@@ -102,7 +111,10 @@ var
 begin
   sSQL := '';
   sSQL := sSQL + 'create table '+UpperCase(TableName)+' ';
-  sSQL := sSQL + ' (ID '+getStrSQLFieldType(ftInteger, 0, True);
+  if CreateIDLargeint then
+    sSQL := sSQL + ' (ID '+getStrSQLFieldType(ftLargeint, 0, True)
+  else
+    sSQL := sSQL + ' (ID '+getStrSQLFieldType(ftInteger, 0, True);
   // SQLite
   if (UpperCase(Driver) = UpperCase(ctDriveSQLite)) then
   begin
@@ -130,6 +142,7 @@ end;
 constructor TIFB_Conn.Create(const ConnName: string);
 begin
   Self.ConnName := ConnName;
+  FCreateIDLargeint := False;
 end;
 
 procedure TIFB_Conn.DropTable(const TableName: string);
@@ -162,6 +175,26 @@ begin
       if Assigned(getQuery('select '+ UpperCase(FieldName) +' from '+UpperCase(TableName)+ ' where ID is null ')) then
         Result := True;
   except
+  end;
+end;
+
+function TIFB_Conn.ForeignKeyExist(const ForeignKeyName: String): Boolean;
+var
+  sSQL : string;
+begin
+  if (UpperCase(Driver) = UpperCase(ctDriveFB)) then
+  begin
+    Result := False;
+    sSQL := 'select 0 '+
+            '  from RDB$RELATION_CONSTRAINTS  '+
+            ' where RDB$CONSTRAINT_NAME =  '+ QuotedStr(ForeignKeyName);
+    with getQuery(sSQL) do
+    begin
+      if not IsEmpty then
+        Result := True;
+      Close;
+      Free;
+    end;
   end;
 end;
 
@@ -265,6 +298,12 @@ end;
 procedure TIFB_Conn.setConnName(const Value: string);
 begin
   FConnName := Value;
+end;
+
+procedure TIFB_Conn.setDefaultValue(const TableName, FieldName : string;
+  const Value: string);
+begin
+  ExecSQL('alter table '+TableName+' alter '+FieldName+' set default '+Value+' ');
 end;
 
 procedure TIFB_Conn.setFieldPrimaryKey(const TableName, FieldName: string);

@@ -61,6 +61,8 @@ begin
       end;
     except
     end;
+    Close;
+    Free;
   end;
   //
 end;
