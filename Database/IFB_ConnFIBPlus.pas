@@ -25,6 +25,9 @@ type
 
 implementation
 
+uses
+  App;
+
 { TIFB_ConnFIBPlus }
 
 function TIFB_ConnFIBPlus.connect: Boolean;
@@ -42,7 +45,9 @@ begin
     Driver := ctDriveFB;
     FBConn.Close;
     FBConn.DefaultTransaction := FDefTrans;
-    FBConn.DBName := oIFB_FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'database', 'C:\IFBasico\dados\dados.fdb');
+    FBConn.DBName := oIFB_FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'server', '127.0.0.1')+'/'+
+                     oIFB_FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'port', '3050')+':'+
+                     oIFB_FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'database', 'C:\'+oApp.SiglaEmpresa+'\'+oApp.SiglaProjeto+'\data\dados.fdb');
     FBConn.SQLDialect := StrToInt(oIFB_FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'SQLDialect', '3'));
     FBConn.LibraryName := oIFB_FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'LibraryName', '');
     FBConn.DBParams.Text := oIFB_FuncoesINI.getStringListOfArqINI(DataBaseFileConf, ConnName+'_PARAMS').Text;
