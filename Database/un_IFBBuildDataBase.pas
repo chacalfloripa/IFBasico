@@ -59,6 +59,38 @@ begin
         FieldByName('nm_situacao').AsString := 'EXCLUIDO';
         Post;
       end;
+      // Verifica se existe a situação CANCELADO.
+      if not Locate('id', 3, []) then
+      begin
+        Append;
+        FieldByName('id').AsInteger := 3;
+        FieldByName('nm_situacao').AsString := 'CANCELADO';
+        Post;
+      end;
+      // Verifica se existe a situação FECHADO.
+      if not Locate('id', 4, []) then
+      begin
+        Append;
+        FieldByName('id').AsInteger := 4;
+        FieldByName('nm_situacao').AsString := 'FECHADO';
+        Post;
+      end;
+      // Verifica se existe a situação BLOQUEADO.
+      if not Locate('id', 5, []) then
+      begin
+        Append;
+        FieldByName('id').AsInteger := 5;
+        FieldByName('nm_situacao').AsString := 'BLOQUEADO';
+        Post;
+      end;
+      // Verifica se existe a situação LIBERADO.
+      if not Locate('id', 6, []) then
+      begin
+        Append;
+        FieldByName('id').AsInteger := 6;
+        FieldByName('nm_situacao').AsString := 'LIBERADO';
+        Post;
+      end;
     except
     end;
     Close;
