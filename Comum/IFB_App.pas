@@ -11,6 +11,7 @@ type
     FHomePath : string;
     FAppPath : string;
     FAppConfPath : string;
+    FAppImagePath : string;
     FAppLibPath : string;
     FSiglaProjeto: string;
     FSiglaEmpresa: string;
@@ -32,12 +33,15 @@ type
     function getNomeSistema: string;
     function getLibPath: string;
     procedure setLibPath(const Value: string);
+    function getAppImagePath: string;
+    procedure setAppImagePath(const Value: string);
     { Private declarations }
   public
     property AppHome : string read getAppHome write setAppHome;
     property AppPath : string read getAppPath write setAppPath;
     property AppLibPath : string read getLibPath write setLibPath;
     property AppConfPath : string read getAppConfPath write setAppConfPath;
+    property AppImagePath : string read getAppImagePath write setAppImagePath;
     property SiglaEmpresa : string read getSiglaEmpresa write FSiglaEmpresa;
     property SiglaProjeto : string read getSiglaProjeto write FSiglaProjeto;
     property IDSistema : Word read getIDSistema write FIDSistema;
@@ -86,6 +90,22 @@ begin
     end;
   end;
   Result := FHomePath;
+end;
+
+function TIFB_App.getAppImagePath: string;
+begin
+  if Trim(FAppConfPath) = '' then
+  begin
+    FAppConfPath := 'Image';
+    if copy(Trim(AppHome), Length(AppHome), 1) <> PathDelim then
+      FAppConfPath := PathDelim+FAppConfPath;
+    FAppConfPath := AppHome+FAppConfPath;
+    if not DirectoryExists(FAppConfPath) then
+    begin
+      CreateDir(FAppConfPath)
+    end;
+  end;
+  Result := FAppConfPath;
 end;
 
 function TIFB_App.getAppPath: string;
@@ -158,6 +178,11 @@ begin
     FHomePath := Value;
     CreateDir(FAppPath)
   end;
+end;
+
+procedure TIFB_App.setAppImagePath(const Value: string);
+begin
+
 end;
 
 procedure TIFB_App.setAppPath(const Value: string);
