@@ -37,6 +37,7 @@ type
     procedure setAppImagePath(const Value: string);
     { Private declarations }
   public
+    constructor Create; virtual;
     property AppHome : string read getAppHome write setAppHome;
     property AppPath : string read getAppPath write setAppPath;
     property AppLibPath : string read getLibPath write setLibPath;
@@ -48,8 +49,6 @@ type
     property NomeSistema : string read getNomeSistema write FNomeSistema;
     property NomeLongoSistema : string read getNomeLongoSistema write FNomeLongoSistema;
     property DescricaoSistema : string read getDescricaoSistema write FDescricaoSistema;
-
-
     { Public declarations }
   end;
 
@@ -57,6 +56,11 @@ implementation
 
 
 { TIFB_App }
+
+constructor TIFB_App.Create;
+begin
+
+end;
 
 function TIFB_App.getAppConfPath: string;
 begin
