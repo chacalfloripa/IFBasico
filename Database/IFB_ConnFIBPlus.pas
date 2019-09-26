@@ -20,6 +20,9 @@ type
     procedure ExecSQL(const SQL : string); override;
     procedure ExecScript(const SQLs : array of string); override;
     function connected:Boolean; override;
+    function getServeTime : TTime; virtual;
+    function getServeDate : TDate; virtual;
+    function getServeDateTime : TDateTime; virtual;
     { Public declarations }
   end;
 
@@ -143,6 +146,30 @@ begin
   TpFIBDataSet(result).AutoCommit := True;
   Result.Open;
   TpFIBDataSet(result).FetchAll;
+end;
+
+function TIFB_ConnFIBPlus.getServeDate: TDate;
+begin
+  Result := getServeDateTime;
+end;
+
+function TIFB_ConnFIBPlus.getServeDateTime: TDateTime;
+const
+  ctSQL = 'select first 1 current_timestamp as dh from RDB$DATABASE';
+var
+  qry_temp : TDataSet;
+begin
+  qry_temp := getQuery(ctSQL);
+  try
+     Result := qry_temp.FieldByName('dh').AsDateTime;
+  finally
+    FreeAndNil(qry_temp);
+  end;
+end;
+
+function TIFB_ConnFIBPlus.getServeTime: TTime;
+begin
+  Result := getServeDateTime;
 end;
 
 end.

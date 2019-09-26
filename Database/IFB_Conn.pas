@@ -58,6 +58,9 @@ type
     function generatorExist(const GenName: string): Boolean;
     function primaryKeyExist(const PrimaryKeyName: string): Boolean;
     function getSeq(const SeqName:string) : Variant;
+    function getServeTime : TTime; virtual;
+    function getServeDate : TDate; virtual;
+    function getServeDateTime : TDateTime; virtual;
     property ConnName : string read FConnName  write setConnName;
     property Driver : string read FDriver  write FDriver;
     property DataBaseFileConf : string read getDataBaseFileConf;
@@ -226,6 +229,21 @@ begin
 end;
 
 function TIFB_Conn.getSeq(const SeqName: string): Variant;
+begin
+
+end;
+
+function TIFB_Conn.getServeDate: TDate;
+begin
+
+end;
+
+function TIFB_Conn.getServeDateTime: TDateTime;
+begin
+
+end;
+
+function TIFB_Conn.getServeTime: TTime;
 begin
 
 end;
