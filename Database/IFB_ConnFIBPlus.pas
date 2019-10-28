@@ -63,7 +63,7 @@ end;
 
 function TIFB_ConnFIBPlus.connected: Boolean;
 begin
-  Result := FBConn.Connected;
+  Result := FBConn.TestConnected;
 end;
 
 procedure TIFB_ConnFIBPlus.ExecScript(const SQLs: array of string);
