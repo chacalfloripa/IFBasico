@@ -21,9 +21,6 @@ type
     { Public declarations }
   end;
 
-var
-  oIFB_FuncoesINI : TIFB_FuncoesINI;
-
 implementation
 
 { TIFB_FuncoesINI }
@@ -101,12 +98,5 @@ begin
     setINIParam( prNameArqINI, prGroupParam, IntToStr( iCount ), prStringList.Strings[ iCount ] );
   end;
 end;
-
-
-initialization
-  oIFB_FuncoesINI := TIFB_FuncoesINI.Create;
-
-finalization
-  FreeAndNil(oIFB_FuncoesINI);
 
 end.

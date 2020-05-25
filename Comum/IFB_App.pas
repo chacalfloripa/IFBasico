@@ -25,6 +25,7 @@ type
     FNomeLongoSistema: string;
     FNomeSistema: string;
     FDescricaoSistema: string;
+    FFuncoesINI : TIFB_FuncoesINI;
     function getAppPath: string;
     procedure setAppPath(const Value: string);
     function getAppConfPath: string;
@@ -41,6 +42,7 @@ type
     procedure setLibPath(const Value: string);
     function getAppImagePath: string;
     procedure setAppImagePath(const Value: string);
+    function getFuncoesINI: TIFB_FuncoesINI; virtual;
     { Private declarations }
   public
     constructor Create; virtual;
@@ -55,6 +57,7 @@ type
     property NomeSistema : string read getNomeSistema write FNomeSistema;
     property NomeLongoSistema : string read getNomeLongoSistema write FNomeLongoSistema;
     property DescricaoSistema : string read getDescricaoSistema write FDescricaoSistema;
+    property FuncoesINI : TIFB_FuncoesINI read getFuncoesINI;
     { Public declarations }
   end;
 
@@ -134,6 +137,11 @@ end;
 function TIFB_App.getDescricaoSistema: string;
 begin
   Result := FDescricaoSistema;
+end;
+
+function TIFB_App.getFuncoesINI: TIFB_FuncoesINI;
+begin
+  Result := FFuncoesINI;
 end;
 
 function TIFB_App.getIDSistema: Word;
