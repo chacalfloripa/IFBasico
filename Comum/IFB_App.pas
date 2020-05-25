@@ -3,7 +3,13 @@ unit IFB_App;
 interface
 
 uses
-  System.SysUtils, System.Classes, System.IOUtils, IFB_FuncoesINI, Forms;
+  System.SysUtils, System.Classes, System.IOUtils, IFB_FuncoesINI
+  {$IF DECLARED(FireMonkeyVersion)}
+    , FMX.Forms
+  {$ELSE}
+    , Vcl.Forms
+  {$ENDIF }
+  ;
 
 type
   TIFB_App = class
