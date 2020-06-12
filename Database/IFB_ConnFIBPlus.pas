@@ -20,9 +20,9 @@ type
     procedure ExecSQL(const SQL : string); override;
     procedure ExecScript(const SQLs : array of string); override;
     function connected:Boolean; override;
-    function getServeTime : TTime; virtual;
-    function getServeDate : TDate; virtual;
-    function getServeDateTime : TDateTime; virtual;
+    function getServeTime : TTime; override;
+    function getServeDate : TDate; override;
+    function getServeDateTime : TDateTime; override;
     { Public declarations }
   end;
 
