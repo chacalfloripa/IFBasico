@@ -1,15 +1,67 @@
 unit IFB_Conn;
 
+{$IFDEF FPC}
+  {$MODE Delphi}
+{$ENDIF}
+
 interface
 
 uses
-  System.SysUtils, System.Classes, DB, strUtils;
+  SysUtils, Classes, DB, strUtils;
 
 const
   ctDriveFB = 'FB';
   ctDriveSQLite = 'SQLite';
 
 type
+
+  IIFB_DataSet = Interface
+  ['{AB93642E-40B2-4F11-ADB9-8EF03FA6A090}']
+    procedure setAutoCommit(const Value: Boolean);
+    function getAutoCommit : Boolean;
+    property AutoCommit : Boolean read getAutoCommit write setAutoCommit;
+  end;
+
+  IIFB_Table = Interface
+  ['{14632481-271D-4AB0-8F86-DD73604101AB}']
+    procedure setTableName(const Value: string);
+    function getTableName : string;
+    property TableName : string read getTableName write setTableName;
+  end;
+
+  IIFB_Query = Interface
+  ['{AE5BAF4F-5701-45CA-BF98-20D46307EE13}']
+    function getSQL:TStrings;
+    procedure setSQL(const Value: TStrings);
+    procedure ExecSQL;
+    property SQL : TStrings read getSQL write setSQL;
+  end;
+
+  TIFB_Table = class(TDataSet, IIFB_DataSet, IIFB_Table)
+  private
+    function getTableName: string;
+    procedure setTableName(const Value: string);
+    function getAutoCommit: Boolean;
+    procedure setAutoCommit(const Value: Boolean);
+  public
+    property TableName : string read getTableName write setTableName;
+    property AutoCommit : Boolean read getAutoCommit write setAutoCommit;
+  end;
+
+  { TIFB_Query }
+
+  TIFB_Query = class(TDataSet, IIFB_DataSet, IIFB_Query)
+  private
+    function getSQL: TStrings;
+    procedure setSQL(const Value: TStrings);
+    function getAutoCommit: Boolean;
+    procedure setAutoCommit(const Value: Boolean);
+  public
+    procedure ExecSQL; virtual;
+    property SQL : TStrings read getSQL write setSQL;
+    property AutoCommit : Boolean read getAutoCommit write setAutoCommit;
+  end;
+
   TIFB_Conn = class
   private
     FConnName: string;
@@ -22,13 +74,14 @@ type
 
     { Private declarations }
   public
-    constructor Create(const ConnName:  string);
+    constructor Create(const ConnName:  string); virtual; {$IFDEF FPC} overload; {$ENDIF}
     function connect:Boolean; virtual; abstract;
+    function Disconnect:Boolean; virtual; abstract;
     function connected:Boolean; virtual; abstract;
     procedure ExecSQL(const SQL : string); virtual; abstract;
     procedure ExecScript(const SQLs : array of string); virtual; abstract;
-    function getDataSet(const TableName : string):TDataSet; virtual; abstract;
-    function getQuery(const SQL : string):TDataSet; virtual; abstract;
+    function getDataSet(const TableName : string):TIFB_Table; virtual; abstract;
+    function getQuery(const SQL : string):TIFB_Query; virtual; abstract;
     procedure addTable(const TableName: string); overload;  virtual;
     procedure addTable(const TableName: string;
                        const CreatePK : Boolean;
@@ -62,7 +115,7 @@ type
     function getServeDate : TDate; virtual;
     function getServeDateTime : TDateTime; virtual;
     property ConnName : string read FConnName  write setConnName;
-    property Driver : string read FDriver  write FDriver;
+    property Driver : string read FDriver write FDriver;
     property DataBaseFileConf : string read getDataBaseFileConf;
     property CreateIDLargeint : Boolean read FCreateIDLargeint write FCreateIDLargeint;
     { Public declarations }
@@ -72,6 +125,33 @@ implementation
 
 uses
   App;
+
+{ TIFB_Query }
+
+procedure TIFB_Query.ExecSQL;
+begin
+
+end;
+
+function TIFB_Query.getAutoCommit: Boolean;
+begin
+
+end;
+
+function TIFB_Query.getSQL: TStrings;
+begin
+
+end;
+
+procedure TIFB_Query.setAutoCommit(const Value: Boolean);
+begin
+
+end;
+
+procedure TIFB_Query.setSQL(const Value: TStrings);
+begin
+
+end;
 
 { TIFB_Conn }
 
@@ -207,7 +287,7 @@ const
             '  from RDB$GENERATORS a '+
             ' where a.RDB$GENERATOR_NAME = ';
 var
-  qry_temp : TDataSet;
+  qry_temp : TIFB_Query;
 begin
   Result := False;
   if Driver = ctDriveFB then
@@ -360,6 +440,28 @@ begin
       Free;
     end;
   end;
+end;
+
+{ TIFB_Table }
+
+function TIFB_Table.getAutoCommit: Boolean;
+begin
+
+end;
+
+function TIFB_Table.getTableName: string;
+begin
+
+end;
+
+procedure TIFB_Table.setAutoCommit(const Value: Boolean);
+begin
+
+end;
+
+procedure TIFB_Table.setTableName(const Value: string);
+begin
+
 end;
 
 end.

@@ -1,9 +1,11 @@
 unit un_DBFuncoes;
 
+{$MODE Delphi}
+
 interface
 
 uses
-  Data.DB, System.StrUtils, System.SysUtils, System.DateUtils;
+  DB, StrUtils, SysUtils, DateUtils;
 
 type
  TDBFuncoes = class

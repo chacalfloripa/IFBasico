@@ -1,9 +1,13 @@
 unit un_IFBBuildDataBase;
 
+{$IFDEF FPC}
+  {$MODE Delphi}
+{$ENDIF}
+
 interface
 
 uses
-  System.SysUtils, System.Classes, DB;
+  SysUtils, Classes, DB;
 
 type
   TIFB_BuildDataBase = class

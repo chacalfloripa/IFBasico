@@ -1,9 +1,13 @@
 unit IFB_ConnFIBPlus;
 
+{$IFDEF FPC}
+  {$MODE Delphi}
+{$ENDIF}
+
 interface
 
 uses
-  System.SysUtils, System.Classes, DB, IFB_Conn, IFB_FuncoesINI,
+  SysUtils, Classes, DB, IFB_Conn, IFB_FuncoesINI,
   FIBDatabase, pFIBDatabase, FIBQuery, pFIBQuery, FIBDataSet, pFIBDataSet,
   pFIBScripter;
 
@@ -15,8 +19,8 @@ type
     FBConn: TpFIBDatabase;
     FDefTrans : TpFIBTransaction;
     function connect:Boolean; override;
-    function getDataSet(const TableName : string):TDataSet; override;
-    function getQuery(const SQL : string):TDataSet; override;
+    function getDataSet(const TableName : string):TIFB_Table; override;
+    function getQuery(const SQL : string):TIFB_Query; override;
     procedure ExecSQL(const SQL : string); override;
     procedure ExecScript(const SQLs : array of string); override;
     function connected:Boolean; override;
@@ -25,6 +29,15 @@ type
     function getServeDateTime : TDateTime; override;
     { Public declarations }
   end;
+
+  TIFB_TableFibPlus = class(TpFIBDataSet)
+
+  end;
+
+  TIFB_QueryFIBPlus = class(TpFIBQuery)
+
+  end;
+
 
 implementation
 
@@ -114,9 +127,9 @@ begin
   end;
 end;
 
-function TIFB_ConnFIBPlus.getDataSet(const TableName: string): TDataSet;
+function TIFB_ConnFIBPlus.getDataSet(const TableName: string): TIFB_Table;
 begin
-  result := TpFIBDataSet.Create(nil);
+  TDataSet(result) := TpFIBDataSet.Create(nil);
   //
   TpFIBDataSet(result).DefaultFormats.DateTimeDisplayFormat := 'dd/mm/yyyy hh:mm';
   TpFIBDataSet(result).DefaultFormats.DisplayFormatDate := 'dd/mm/yyyy';
@@ -128,24 +141,17 @@ begin
   TpFIBDataSet(result).SQLs.InsertSQL.Text  := TpFIBDataSet(result).GenerateSQLText(TableName, 'ID', skInsert);
   TpFIBDataSet(result).SQLs.DeleteSQL.Text  := TpFIBDataSet(result).GenerateSQLText(TableName, 'ID', skDelete);
   TpFIBDataSet(result).SQLs.RefreshSQL.Text := TpFIBDataSet(result).GenerateSQLText(TableName, 'ID', skRefresh);
-  TpFIBDataSet(result).AutoCommit := True;
-  Result.Open;
-  TpFIBDataSet(result).FetchAll;
 end;
 
-function TIFB_ConnFIBPlus.getQuery(const SQL: string): TDataSet;
+function TIFB_ConnFIBPlus.getQuery(const SQL: string): TIFB_Query;
 begin
-  result := TpFIBDataSet.Create(nil);
-  //
+  TDataSet(result) := TpFIBDataSet.Create(nil);
   TpFIBDataSet(result).DefaultFormats.DateTimeDisplayFormat := 'dd/mm/yyyy hh:mm';
   TpFIBDataSet(result).DefaultFormats.DisplayFormatDate := 'dd/mm/yyyy';
   TpFIBDataSet(result).DefaultFormats.DisplayFormatTime := 'hh:mm';
   //
   TpFIBDataSet(result).Database := FBConn;
   TpFIBDataSet(result).SQLs.SelectSQL.Text  := SQL;
-  TpFIBDataSet(result).AutoCommit := True;
-  Result.Open;
-  TpFIBDataSet(result).FetchAll;
 end;
 
 function TIFB_ConnFIBPlus.getServeDate: TDate;

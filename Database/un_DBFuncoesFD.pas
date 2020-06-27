@@ -1,5 +1,7 @@
 unit un_DBFuncoesFD;
 
+{$MODE Delphi}
+
 interface
 
 uses

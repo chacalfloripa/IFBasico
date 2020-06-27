@@ -1,9 +1,13 @@
 unit IFB_FuncoesINI;
 
+{$IFDEF FPC}
+  {$MODE Delphi}
+{$ENDIF}
+
 interface
 
 uses
-  System.SysUtils, System.Classes, System.IniFiles;
+  SysUtils, Classes, IniFiles;
 
 type
   TIFB_FuncoesINI = class

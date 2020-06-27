@@ -1,14 +1,22 @@
 unit IFB_App;
 
+{$IFDEF FPC}
+  {$MODE Delphi}
+{$ENDIF}
+
 interface
 
 uses
-  System.SysUtils, System.Classes, System.IOUtils, IFB_FuncoesINI
-  {$IF DECLARED(FireMonkeyVersion)}
-    , FMX.Forms
-  {$ELSE}
-    , Vcl.Forms
-  {$ENDIF }
+  SysUtils, Classes, IFB_FuncoesINI
+  {$IFDEF FPC}
+    , Forms
+  {$else}
+    {$IF DECLARED(FireMonkeyVersion)}
+        , FMX.Forms
+    {$else}
+      , Vcl.Forms
+    {$ENDIF}
+ {$ENDIF}
   ;
 
 type
@@ -68,7 +76,7 @@ implementation
 
 constructor TIFB_App.Create;
 begin
-
+  FFuncoesINI := TIFB_FuncoesINI.Create;
 end;
 
 function TIFB_App.getAppConfPath: string;

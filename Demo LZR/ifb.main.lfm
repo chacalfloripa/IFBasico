@@ -1,0 +1,406 @@
+object IFB_Main: TIFB_Main
+  Left = 103
+  Height = 528
+  Top = 134
+  Width = 791
+  Caption = 'IFB_Main'
+  ClientHeight = 528
+  ClientWidth = 791
+  LCLVersion = '2.0.8.0'
+  object PageControl1: TPageControl
+    Left = 0
+    Height = 528
+    Top = 0
+    Width = 791
+    ActivePage = TabSheet1
+    Align = alClient
+    TabIndex = 0
+    TabOrder = 0
+    object TabSheet1: TTabSheet
+      Caption = 'Database'
+      ClientHeight = 500
+      ClientWidth = 783
+      object PageControl2: TPageControl
+        Left = 0
+        Height = 459
+        Top = 41
+        Width = 783
+        ActivePage = TabSheet3
+        Align = alClient
+        TabIndex = 1
+        TabOrder = 0
+        object TabSheet2: TTabSheet
+          Caption = 'Funções'
+          ClientHeight = 366
+          ClientWidth = 775
+          object lblTesteHora: TLabel
+            Left = 175
+            Height = 23
+            Top = 67
+            Width = 94
+            Caption = 'hh:mm:ss'
+            Font.Color = clWindowText
+            Font.Height = -19
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentColor = False
+            ParentFont = False
+          end
+          object lblTesteData: TLabel
+            Left = 175
+            Height = 23
+            Top = 36
+            Width = 133
+            Caption = 'dd:/mm/yyyy'
+            Font.Color = clWindowText
+            Font.Height = -19
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentColor = False
+            ParentFont = False
+          end
+          object lblTesteDataHora: TLabel
+            Left = 175
+            Height = 23
+            Top = 5
+            Width = 215
+            Caption = 'dd/mm/yyy hh:mm:ss'
+            Font.Color = clWindowText
+            Font.Height = -19
+            Font.Name = 'Tahoma'
+            Font.Style = [fsBold]
+            ParentColor = False
+            ParentFont = False
+          end
+          object Button2: TButton
+            Left = 3
+            Height = 25
+            Top = 3
+            Width = 166
+            Caption = 'Data e Hora'
+            OnClick = Button2Click
+            TabOrder = 0
+          end
+          object Button3: TButton
+            Left = 3
+            Height = 25
+            Top = 34
+            Width = 166
+            Caption = 'Data'
+            OnClick = Button3Click
+            TabOrder = 1
+          end
+          object Button4: TButton
+            Left = 3
+            Height = 25
+            Top = 64
+            Width = 166
+            Caption = 'Hora'
+            OnClick = Button4Click
+            TabOrder = 2
+          end
+        end
+        object TabSheet3: TTabSheet
+          Caption = 'Estrutura de Dados'
+          ClientHeight = 431
+          ClientWidth = 775
+          ImageIndex = 1
+          object GroupBox2: TGroupBox
+            Left = 0
+            Height = 186
+            Top = 174
+            Width = 775
+            Align = alTop
+            Caption = 'Testa se campo existe na tabela'
+            ClientHeight = 166
+            ClientWidth = 771
+            TabOrder = 0
+            object Label2: TLabel
+              Left = 175
+              Height = 15
+              Top = 20
+              Width = 69
+              Caption = 'Nome Tabela'
+              ParentColor = False
+            end
+            object Label3: TLabel
+              Left = 399
+              Height = 15
+              Top = 20
+              Width = 75
+              Caption = 'Nome Campo'
+              ParentColor = False
+            end
+            object Label4: TLabel
+              Left = 175
+              Height = 15
+              Top = 85
+              Width = 107
+              Caption = 'Novo Nome Campo'
+              ParentColor = False
+            end
+            object Button6: TButton
+              Left = 3
+              Height = 25
+              Top = 21
+              Width = 166
+              Caption = 'Existe Campo'
+              OnClick = Button6Click
+              TabOrder = 0
+            end
+            object edtExistFieldNomeTabela: TEdit
+              Left = 175
+              Height = 23
+              Top = 39
+              Width = 218
+              TabOrder = 1
+            end
+            object dtExistFieldNomeCampo: TEdit
+              Left = 399
+              Height = 23
+              Top = 39
+              Width = 234
+              TabOrder = 2
+            end
+            object Button7: TButton
+              Left = 3
+              Height = 45
+              Top = 83
+              Width = 166
+              Caption = 'Renomar Campo'
+              TabOrder = 3
+            end
+            object Edit1: TEdit
+              Left = 175
+              Height = 23
+              Top = 104
+              Width = 218
+              TabOrder = 4
+            end
+            object Button10: TButton
+              Left = 3
+              Height = 25
+              Top = 134
+              Width = 166
+              Caption = 'Eliminar Campo'
+              TabOrder = 5
+            end
+            object Button12: TButton
+              Left = 3
+              Height = 25
+              Top = 52
+              Width = 166
+              Caption = 'Criar Campo'
+              TabOrder = 6
+            end
+          end
+          object GroupBox1: TGroupBox
+            Left = 0
+            Height = 174
+            Top = 0
+            Width = 775
+            Align = alTop
+            Caption = 'Testa se tabela existe'
+            ClientHeight = 154
+            ClientWidth = 771
+            TabOrder = 1
+            object Label1: TLabel
+              Left = 175
+              Height = 15
+              Top = 16
+              Width = 69
+              Caption = 'Nome Tabela'
+              ParentColor = False
+            end
+            object Label5: TLabel
+              Left = 175
+              Height = 15
+              Top = 79
+              Width = 101
+              Caption = 'Novo Nome Tabela'
+              ParentColor = False
+            end
+            object Button5: TButton
+              Left = 3
+              Height = 25
+              Top = 20
+              Width = 166
+              Caption = 'Existe Tabela'
+              OnClick = Button5Click
+              TabOrder = 0
+            end
+            object edtExistTabela: TEdit
+              Left = 175
+              Height = 23
+              Top = 35
+              Width = 218
+              TabOrder = 1
+            end
+            object Button8: TButton
+              Left = 3
+              Height = 39
+              Top = 81
+              Width = 166
+              Caption = 'Renomear tabela'
+              OnClick = Button8Click
+              TabOrder = 2
+            end
+            object Button9: TButton
+              Left = 3
+              Height = 25
+              Top = 126
+              Width = 166
+              Caption = 'Eliminar Tabela'
+              OnClick = Button9Click
+              TabOrder = 3
+            end
+            object Edit2: TEdit
+              Left = 175
+              Height = 23
+              Top = 98
+              Width = 218
+              TabOrder = 4
+            end
+            object Button11: TButton
+              Left = 3
+              Height = 25
+              Top = 48
+              Width = 166
+              Caption = 'Criar Tabela'
+              OnClick = Button11Click
+              TabOrder = 5
+            end
+          end
+        end
+        object TabSheet4: TTabSheet
+          Caption = 'Tabela'
+          ClientHeight = 366
+          ClientWidth = 775
+          object Panel2: TPanel
+            Left = 0
+            Height = 66
+            Top = 0
+            Width = 775
+            Align = alTop
+            ClientHeight = 66
+            ClientWidth = 775
+            TabOrder = 0
+            object Label6: TLabel
+              Left = 8
+              Height = 15
+              Top = 8
+              Width = 33
+              Caption = 'Tabela'
+              ParentColor = False
+            end
+            object Edit3: TEdit
+              Left = 8
+              Height = 23
+              Top = 24
+              Width = 264
+              TabOrder = 0
+            end
+            object Button13: TButton
+              Left = 280
+              Height = 25
+              Top = 22
+              Width = 75
+              Caption = 'Abrir'
+              OnClick = Button13Click
+              TabOrder = 1
+            end
+          end
+          object DBGrid1: TDBGrid
+            Left = 0
+            Height = 300
+            Top = 66
+            Width = 775
+            Align = alClient
+            Color = clWindow
+            Columns = <>
+            DataSource = DsTabela
+            TabOrder = 1
+          end
+        end
+        object TabSheet5: TTabSheet
+          Caption = 'Consulta'
+          ClientHeight = 366
+          ClientWidth = 775
+          object Panel3: TPanel
+            Left = 0
+            Height = 154
+            Top = 0
+            Width = 775
+            Align = alTop
+            ClientHeight = 154
+            ClientWidth = 775
+            TabOrder = 0
+            object Label7: TLabel
+              Left = 8
+              Height = 15
+              Top = 8
+              Width = 21
+              Caption = 'SQL'
+              ParentColor = False
+            end
+            object Button14: TButton
+              Left = 693
+              Height = 25
+              Top = 120
+              Width = 75
+              Caption = 'Consultar'
+              OnClick = Button14Click
+              TabOrder = 0
+            end
+            object Memo1: TMemo
+              Left = 8
+              Height = 88
+              Top = 24
+              Width = 760
+              TabOrder = 1
+            end
+          end
+          object DBGrid2: TDBGrid
+            Left = 0
+            Height = 212
+            Top = 154
+            Width = 775
+            Align = alClient
+            Color = clWindow
+            Columns = <>
+            DataSource = DsConsulta
+            TabOrder = 1
+          end
+        end
+      end
+      object Panel1: TPanel
+        Left = 0
+        Height = 41
+        Top = 0
+        Width = 783
+        Align = alTop
+        BevelOuter = bvNone
+        ClientHeight = 41
+        ClientWidth = 783
+        TabOrder = 1
+        object Button1: TButton
+          Left = 3
+          Height = 25
+          Top = 8
+          Width = 113
+          Caption = 'Connect DB'
+          OnClick = Button1Click
+          TabOrder = 0
+        end
+      end
+    end
+  end
+  object DsTabela: TDataSource
+    left = 624
+    top = 8
+  end
+  object DsConsulta: TDataSource
+    left = 664
+    top = 8
+  end
+end

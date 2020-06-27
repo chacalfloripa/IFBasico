@@ -1,5 +1,7 @@
 unit IFB_ConnFD;
 
+{$MODE Delphi}
+
 interface
 
 uses

@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CONFIG>
+  <ProjectSession>
+    <PathDelim Value="\"/>
+    <Version Value="11"/>
+    <BuildModes Active="Default"/>
+    <Units Count="26">
+      <Unit0>
+        <Filename Value="AppLZR.lpr"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="47" Y="24"/>
+        <UsageCount Value="21"/>
+      </Unit0>
+      <Unit1>
+        <Filename Value="ifb.main.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="IFB_Main"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="IFB.Main"/>
+        <IsVisibleTab Value="True"/>
+        <TopLine Value="105"/>
+        <CursorPos X="10" Y="136"/>
+        <UsageCount Value="21"/>
+        <Loaded Value="True"/>
+        <LoadedDesigner Value="True"/>
+      </Unit1>
+      <Unit2>
+        <Filename Value="..\Comum\IFB_App.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="118"/>
+        <CursorPos Y="140"/>
+        <UsageCount Value="21"/>
+      </Unit2>
+      <Unit3>
+        <Filename Value="..\Comum\IFB_FuncoesINI.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="21"/>
+      </Unit3>
+      <Unit4>
+        <Filename Value="..\Comum\IFB_Thread.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="21"/>
+      </Unit4>
+      <Unit5>
+        <Filename Value="..\Database\IFB_Conn.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="21"/>
+      </Unit5>
+      <Unit6>
+        <Filename Value="..\Database\IFB_ConnZeos.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="21"/>
+        <Bookmarks Count="1">
+          <Item0 X="27" Y="144" ID="1"/>
+        </Bookmarks>
+      </Unit6>
+      <Unit7>
+        <Filename Value="..\Database\un_IFBBuildDataBase.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <WindowIndex Value="-1"/>
+        <TopLine Value="-1"/>
+        <CursorPos X="-1" Y="-1"/>
+        <UsageCount Value="21"/>
+      </Unit7>
+      <Unit8>
+        <Filename Value="App.pas"/>
+        <IsPartOfProject Value="True"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="3"/>
+        <CursorPos X="36" Y="29"/>
+        <UsageCount Value="21"/>
+      </Unit8>
+      <Unit9>
+        <Filename Value="..\Demo VCL\fm_main.pas"/>
+        <ComponentName Value="Form1"/>
+        <HasResources Value="True"/>
+        <ResourceBaseClass Value="Form"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="97"/>
+        <CursorPos X="58" Y="110"/>
+        <UsageCount Value="20"/>
+      </Unit9>
+      <Unit10>
+        <Filename Value="C:\Users\ismaelleandrofaustin\AppData\Local\lazarus\onlinepackagemanager\packages\zeosdbo\src\component\ZConnection.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="32"/>
+        <CursorPos X="14" Y="78"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit10>
+      <Unit11>
+        <Filename Value="C:\Users\ismaelleandrofaustin\AppData\Local\lazarus\onlinepackagemanager\packages\zeosdbo\src\component\ZAbstractConnection.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="458"/>
+        <CursorPos Y="495"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit11>
+      <Unit12>
+        <Filename Value="C:\Users\ismaelleandrofaustin\AppData\Local\lazarus\onlinepackagemanager\packages\zeosdbo\src\core\ZURL.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="44"/>
+        <CursorPos X="5" Y="71"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit12>
+      <Unit13>
+        <Filename Value="..\Database\IFB_ConnFIBPlus.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit13>
+      <Unit14>
+        <Filename Value="..\Database\IFB_ConnFD.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="161"/>
+        <CursorPos Y="177"/>
+        <UsageCount Value="10"/>
+      </Unit14>
+      <Unit15>
+        <Filename Value="C:\lazarus\fpc\3.0.4\source\packages\fcl-db\src\base\db.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="1712"/>
+        <CursorPos Y="1757"/>
+        <UsageCount Value="10"/>
+      </Unit15>
+      <Unit16>
+        <Filename Value="C:\Users\ismaelleandrofaustin\AppData\Local\lazarus\onlinepackagemanager\packages\zeosdbo\src\component\ZDataset.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="60"/>
+        <CursorPos X="20" Y="86"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit16>
+      <Unit17>
+        <Filename Value="C:\Users\ismaelleandrofaustin\AppData\Local\lazarus\onlinepackagemanager\packages\zeosdbo\src\component\ZAbstractDataset.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="91"/>
+        <CursorPos X="3" Y="86"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit17>
+      <Unit18>
+        <Filename Value="C:\Users\ismaelleandrofaustin\AppData\Local\lazarus\onlinepackagemanager\packages\zeosdbo\src\component\ZAbstractRODataset.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="160"/>
+        <CursorPos X="3" Y="182"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit18>
+      <Unit19>
+        <Filename Value="C:\Users\ismaelleandrofaustin\AppData\Local\lazarus\onlinepackagemanager\packages\zeosdbo\src\component\ZAbstractTable.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="45"/>
+        <CursorPos X="3" Y="67"/>
+        <UsageCount Value="10"/>
+        <DefaultSyntaxHighlighter Value="Delphi"/>
+      </Unit19>
+      <Unit20>
+        <Filename Value="C:\eSysPark-Build\Trabalho\esyspark-e\src\delphi\RestResquest4Delphi\src\interfaces\RESTRequest4D.Request.Intf.pas"/>
+        <EditorIndex Value="-1"/>
+        <CursorPos X="47" Y="9"/>
+        <UsageCount Value="10"/>
+      </Unit20>
+      <Unit21>
+        <Filename Value="C:\eSysPark-Build\Trabalho\esyspark-e\src\delphi\RestResquest4Delphi\src\interfaces\RESTRequest4D.Response.Intf.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit21>
+      <Unit22>
+        <Filename Value="C:\eSysPark-Build\Trabalho\esyspark-e\src\delphi\RestResquest4Delphi\src\core\RESTRequest4D.Request.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="234"/>
+        <CursorPos Y="86"/>
+        <UsageCount Value="10"/>
+      </Unit22>
+      <Unit23>
+        <Filename Value="C:\eSysPark-Build\Trabalho\esyspark-e\src\delphi\RestResquest4Delphi\src\core\RESTRequest4D.Response.pas"/>
+        <EditorIndex Value="-1"/>
+        <UsageCount Value="10"/>
+      </Unit23>
+      <Unit24>
+        <Filename Value="..\..\RestResquest4Delphi\samples\client\src\Samples.Main.pas"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="58"/>
+        <CursorPos X="41" Y="72"/>
+        <UsageCount Value="10"/>
+      </Unit24>
+      <Unit25>
+        <Filename Value="C:\lazarus\lcl\include\control.inc"/>
+        <EditorIndex Value="-1"/>
+        <TopLine Value="3523"/>
+        <CursorPos Y="3548"/>
+        <UsageCount Value="10"/>
+      </Unit25>
+    </Units>
+    <JumpHistory Count="18" HistoryIndex="17">
+      <Position1>
+        <Filename Value="ifb.main.pas"/>
+        <Caret Line="74" Column="46" TopLine="60"/>
+      </Position1>
+      <Position2>
+        <Filename Value="ifb.main.pas"/>
+        <Caret Line="102" TopLine="60"/>
+      </Position2>
+      <Position3>
+        <Filename Value="ifb.main.pas"/>
+        <Caret Line="103" TopLine="73"/>
+      </Position3>
+      <Position4>
+        <Filename Value="ifb.main.pas"/>
+        <Caret Line="94" Column="40" TopLine="73"/>
+      </Position4>
+      <Position5>
+        <Filename Value="ifb.main.pas"/>
+        <Caret Line="113" Column="65" TopLine="81"/>
+      </Position5>
+      <Position6>
+        <Filename Value="ifb.main.pas"/>
+        <Caret Line="112" Column="65" TopLine="80"/>
+      </Position6>
+      <Position7>
+        <Filename Value="ifb.main.pas"/>
+        <Caret Line="90" Column="56" TopLine="80"/>
+      </Position7>
+      <Position8>
+        <Filename Value="ifb.main.pas"/>
+        <Caret Line="103" Column="3" TopLine="80"/>
+      </Position8>
+      <Position9>
+        <Filename Value="ifb.main.pas"/>
+        <Caret Line="102" Column="97" TopLine="80"/>
+      </Position9>
+      <Position10>
+        <Filename Value="ifb.main.pas"/>
+        <Caret Line="96" Column="104" TopLine="86"/>
+      </Position10>
+      <Position11>
+        <Filename Value="ifb.main.pas"/>
+        <Caret Line="132" Column="9" TopLine="88"/>
+      </Position11>
+      <Position12>
+        <Filename Value="ifb.main.pas"/>
+        <Caret Line="168" Column="7" TopLine="124"/>
+      </Position12>
+      <Position13>
+        <Filename Value="ifb.main.pas"/>
+        <Caret Line="139" Column="3" TopLine="125"/>
+      </Position13>
+      <Position14>
+        <Filename Value="ifb.main.pas"/>
+        <Caret Line="150" Column="3" TopLine="126"/>
+      </Position14>
+      <Position15>
+        <Filename Value="ifb.main.pas"/>
+        <Caret Line="122" Column="18" TopLine="100"/>
+      </Position15>
+      <Position16>
+        <Filename Value="ifb.main.pas"/>
+        <Caret Line="77" Column="36" TopLine="50"/>
+      </Position16>
+      <Position17>
+        <Filename Value="ifb.main.pas"/>
+        <Caret Line="159" Column="39" TopLine="153"/>
+      </Position17>
+      <Position18>
+        <Filename Value="ifb.main.pas"/>
+        <Caret Line="127" Column="31" TopLine="105"/>
+      </Position18>
+    </JumpHistory>
+    <RunParams>
+      <FormatVersion Value="2"/>
+      <Modes Count="0" ActiveMode=""/>
+    </RunParams>
+  </ProjectSession>
+</CONFIG>
