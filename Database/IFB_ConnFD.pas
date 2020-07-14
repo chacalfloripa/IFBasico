@@ -1,5 +1,7 @@
 unit IFB_ConnFD;
 
+{$MODE Delphi}
+
 interface
 
 uses
@@ -62,7 +64,7 @@ begin
     FDConn.Params.Database := Database;
     FDConn.Params.UserName := UserName;
     FDConn.Params.Password := Password;
-    FDConn.Params.Add(oIFB_FuncoesINI.getStringListOfArqINI(DataBaseFileConf, ConnName+'_PARAMS').Text);
+    FDConn.Params.Add(oApp.FuncoesINI.getStringListOfArqINI(DataBaseFileConf, ConnName+'_PARAMS').Text);
     FDConn.Connected := True;
     Result := FDConn.Connected;
   except
@@ -117,7 +119,7 @@ end;
 
 function TIFB_ConnFD.getDatabase: string;
 begin
-  Result := oIFB_FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'database', '');
+  Result := oApp.FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'database', '');
   if Trim(Result) = '' then
   begin
     {$IFDEF MSWINDOWS}
@@ -144,7 +146,7 @@ end;
 
 function TIFB_ConnFD.getDriver: string;
 begin
-  Result := oIFB_FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'driverid', '');
+  Result := oApp.FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'driverid', '');
   if Trim(Result) = '' then
   begin
     Result := 'sqlite';
@@ -172,32 +174,32 @@ end;
 
 function TIFB_ConnFD.getPassword: string;
 begin
-  Result := oIFB_FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'password', '');
+  Result := oApp.FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'password', '');
 end;
 
 function TIFB_ConnFD.getUserName: string;
 begin
-  Result := oIFB_FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'username', '');
+  Result := oApp.FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'username', '');
 end;
 
 procedure TIFB_ConnFD.setDatabase(const Value: string);
 begin
-  oIFB_FuncoesINI.setINIParam(DataBaseFileConf, ConnName, 'databse', Value);
+  oApp.FuncoesINI.setINIParam(DataBaseFileConf, ConnName, 'databse', Value);
 end;
 
 procedure TIFB_ConnFD.setDriver(const Value: string);
 begin
-  oIFB_FuncoesINI.setINIParam(DataBaseFileConf, ConnName, 'driverid', Value);
+  oApp.FuncoesINI.setINIParam(DataBaseFileConf, ConnName, 'driverid', Value);
 end;
 
 procedure TIFB_ConnFD.setPassword(const Value: string);
 begin
-  oIFB_FuncoesINI.setINIParam(DataBaseFileConf, ConnName, 'password', Value);
+  oApp.FuncoesINI.setINIParam(DataBaseFileConf, ConnName, 'password', Value);
 end;
 
 procedure TIFB_ConnFD.setUserName(const Value: string);
 begin
-  oIFB_FuncoesINI.setINIParam(DataBaseFileConf, ConnName, 'username', Value);
+  oApp.FuncoesINI.setINIParam(DataBaseFileConf, ConnName, 'username', Value);
 end;
 
 end.

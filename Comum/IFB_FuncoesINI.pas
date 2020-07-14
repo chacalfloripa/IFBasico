@@ -1,9 +1,13 @@
 unit IFB_FuncoesINI;
 
+{$IFDEF FPC}
+  {$MODE Delphi}
+{$ENDIF}
+
 interface
 
 uses
-  System.SysUtils, System.Classes, System.IniFiles;
+  SysUtils, Classes, IniFiles;
 
 type
   TIFB_FuncoesINI = class
@@ -20,9 +24,6 @@ type
       prStringList: TStringList);
     { Public declarations }
   end;
-
-var
-  oIFB_FuncoesINI : TIFB_FuncoesINI;
 
 implementation
 
@@ -101,12 +102,5 @@ begin
     setINIParam( prNameArqINI, prGroupParam, IntToStr( iCount ), prStringList.Strings[ iCount ] );
   end;
 end;
-
-
-initialization
-  oIFB_FuncoesINI := TIFB_FuncoesINI.Create;
-
-finalization
-  FreeAndNil(oIFB_FuncoesINI);
 
 end.

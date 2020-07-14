@@ -1,9 +1,5 @@
 unit IFB_Conn;
 
-{$IFDEF FPC}
-  {$MODE Delphi}
-{$ENDIF}
-
 interface
 
 uses
@@ -31,24 +27,19 @@ type
 
   IIFB_DataSet = Interface
   ['{AB93642E-40B2-4F11-ADB9-8EF03FA6A090}']
-    procedure setAutoCommit(const Value: Boolean);
-    function getAutoCommit : Boolean;
-    property AutoCommit : Boolean read getAutoCommit write setAutoCommit;
+    property AutoCommit : Boolean;
+    property Transaction : TIFB_Transaction;
   end;
 
   IIFB_Table = Interface
   ['{14632481-271D-4AB0-8F86-DD73604101AB}']
-    procedure setTableName(const Value: string);
-    function getTableName : string;
-    property TableName : string read getTableName write setTableName;
+    property TableName : string;
   end;
 
   IIFB_Query = Interface
   ['{AE5BAF4F-5701-45CA-BF98-20D46307EE13}']
-    function getSQL:TStrings;
-    procedure setSQL(const Value: TStrings);
     procedure ExecSQL;
-    property SQL : TStrings read getSQL write setSQL;
+    property SQL : TStrings;
   end;
 
   { TIFB_Table }
@@ -93,10 +84,10 @@ type
                                 const Required : Boolean = False):String;
     { Private declarations }
   public
-    constructor Create(const ConnName:  string); virtual; {$IFDEF FPC} overload; {$ENDIF}
+    constructor Create(const ConnName:  string);
     function connect:Boolean; virtual; abstract;
-    function Disconnect:Boolean; virtual; abstract;
     function connected:Boolean; virtual; abstract;
+    function disconnect:Boolean; virtual; abstract;
     procedure ExecSQL(const SQL : string); virtual; abstract;
     procedure ExecScript(const SQLs : array of string); virtual; abstract;
     function getDataSet(const TableName : string):TIFB_Table; virtual; abstract;
@@ -134,7 +125,7 @@ type
     function getServeDate : TDate; virtual;
     function getServeDateTime : TDateTime; virtual;
     property ConnName : string read FConnName  write setConnName;
-    property Driver : string read FDriver write FDriver;
+    property Driver : string read FDriver  write FDriver;
     property DataBaseFileConf : string read getDataBaseFileConf;
     property CreateIDLargeint : Boolean read FCreateIDLargeint write FCreateIDLargeint;
     { Public declarations }
@@ -328,7 +319,7 @@ const
             '  from RDB$GENERATORS a '+
             ' where a.RDB$GENERATOR_NAME = ';
 var
-  qry_temp : TIFB_Query;
+  qry_temp : TDataSet;
 begin
   Result := False;
   if Driver = ctDriveFB then
@@ -481,28 +472,6 @@ begin
       Free;
     end;
   end;
-end;
-
-{ TIFB_Table }
-
-function TIFB_Table.getAutoCommit: Boolean;
-begin
-
-end;
-
-function TIFB_Table.getTableName: string;
-begin
-
-end;
-
-procedure TIFB_Table.setAutoCommit(const Value: Boolean);
-begin
-
-end;
-
-procedure TIFB_Table.setTableName(const Value: string);
-begin
-
 end;
 
 end.

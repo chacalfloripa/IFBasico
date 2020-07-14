@@ -1,9 +1,13 @@
 unit IFB_ConnFIBPlus;
 
+{$IFDEF FPC}
+  {$MODE Delphi}
+{$ENDIF}
+
 interface
 
 uses
-  System.SysUtils, System.Classes, DB, IFB_Conn, IFB_FuncoesINI,
+  SysUtils, Classes, DB, IFB_Conn, IFB_FuncoesINI,
   FIBDatabase, pFIBDatabase, FIBQuery, pFIBQuery, FIBDataSet, pFIBDataSet,
   pFIBScripter;
 
@@ -15,16 +19,25 @@ type
     FBConn: TpFIBDatabase;
     FDefTrans : TpFIBTransaction;
     function connect:Boolean; override;
-    function getDataSet(const TableName : string):TDataSet; override;
-    function getQuery(const SQL : string):TDataSet; override;
+    function getDataSet(const TableName : string):TIFB_Table; override;
+    function getQuery(const SQL : string):TIFB_Query; override;
     procedure ExecSQL(const SQL : string); override;
     procedure ExecScript(const SQLs : array of string); override;
     function connected:Boolean; override;
-    function getServeTime : TTime; virtual;
-    function getServeDate : TDate; virtual;
-    function getServeDateTime : TDateTime; virtual;
+    function getServeTime : TTime; override;
+    function getServeDate : TDate; override;
+    function getServeDateTime : TDateTime; override;
     { Public declarations }
   end;
+
+  TIFB_TableFibPlus = class(TpFIBDataSet)
+
+  end;
+
+  TIFB_QueryFIBPlus = class(TpFIBQuery)
+
+  end;
+
 
 implementation
 
@@ -48,12 +61,12 @@ begin
     Driver := ctDriveFB;
     FBConn.Close;
     FBConn.DefaultTransaction := FDefTrans;
-    FBConn.DBName := oIFB_FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'server', '127.0.0.1')+'/'+
-                     oIFB_FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'port', '3050')+':'+
-                     oIFB_FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'database', 'C:\'+oApp.SiglaEmpresa+'\'+oApp.SiglaProjeto+'\data\dados.fdb');
-    FBConn.SQLDialect := StrToInt(oIFB_FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'SQLDialect', '3'));
-    FBConn.LibraryName := oIFB_FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'LibraryName', '');
-    FBConn.DBParams.Text := oIFB_FuncoesINI.getStringListOfArqINI(DataBaseFileConf, ConnName+'_PARAMS').Text;
+    FBConn.DBName := oApp.FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'server', '127.0.0.1')+'/'+
+                     oApp.FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'port', '3050')+':'+
+                     oApp.FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'database', 'C:\'+oApp.SiglaEmpresa+'\'+oApp.SiglaProjeto+'\data\dados.fdb');
+    FBConn.SQLDialect := StrToInt(oApp.FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'SQLDialect', '3'));
+    FBConn.LibraryName := oApp.FuncoesINI.getINIParam(DataBaseFileConf, ConnName, 'LibraryName', '');
+    FBConn.DBParams.Text := oApp.FuncoesINI.getStringListOfArqINI(DataBaseFileConf, ConnName+'_PARAMS').Text;
     FBConn.Connected := True;
     Result := FBConn.Connected;
   except
@@ -114,9 +127,9 @@ begin
   end;
 end;
 
-function TIFB_ConnFIBPlus.getDataSet(const TableName: string): TDataSet;
+function TIFB_ConnFIBPlus.getDataSet(const TableName: string): TIFB_Table;
 begin
-  result := TpFIBDataSet.Create(nil);
+  TDataSet(result) := TpFIBDataSet.Create(nil);
   //
   TpFIBDataSet(result).DefaultFormats.DateTimeDisplayFormat := 'dd/mm/yyyy hh:mm';
   TpFIBDataSet(result).DefaultFormats.DisplayFormatDate := 'dd/mm/yyyy';
@@ -133,10 +146,9 @@ begin
   TpFIBDataSet(result).FetchAll;
 end;
 
-function TIFB_ConnFIBPlus.getQuery(const SQL: string): TDataSet;
+function TIFB_ConnFIBPlus.getQuery(const SQL: string): TIFB_Query;
 begin
-  result := TpFIBDataSet.Create(nil);
-  //
+  TDataSet(result) := TpFIBDataSet.Create(nil);
   TpFIBDataSet(result).DefaultFormats.DateTimeDisplayFormat := 'dd/mm/yyyy hh:mm';
   TpFIBDataSet(result).DefaultFormats.DisplayFormatDate := 'dd/mm/yyyy';
   TpFIBDataSet(result).DefaultFormats.DisplayFormatTime := 'hh:mm';
