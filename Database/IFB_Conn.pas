@@ -483,26 +483,4 @@ begin
   end;
 end;
 
-{ TIFB_Table }
-
-function TIFB_Table.getAutoCommit: Boolean;
-begin
-
-end;
-
-function TIFB_Table.getTableName: string;
-begin
-
-end;
-
-procedure TIFB_Table.setAutoCommit(const Value: Boolean);
-begin
-
-end;
-
-procedure TIFB_Table.setTableName(const Value: string);
-begin
-
-end;
-
 end.
