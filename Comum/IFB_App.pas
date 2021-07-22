@@ -115,18 +115,18 @@ end;
 
 function TIFB_App.getAppImagePath: string;
 begin
-  if Trim(FAppConfPath) = '' then
+  if Trim(FAppImagePath) = '' then
   begin
-    FAppConfPath := 'Image';
+    FAppImagePath := 'Image';
     if copy(Trim(AppHome), Length(AppHome), 1) <> PathDelim then
-      FAppConfPath := PathDelim+FAppConfPath;
-    FAppConfPath := AppHome+FAppConfPath;
-    if not DirectoryExists(FAppConfPath) then
+      FAppImagePath := PathDelim+FAppImagePath;
+    FAppImagePath := AppHome+FAppImagePath;
+    if not DirectoryExists(FAppImagePath) then
     begin
-      CreateDir(FAppConfPath)
+      CreateDir(FAppImagePath)
     end;
   end;
-  Result := FAppConfPath;
+  Result := FAppImagePath;
 end;
 
 function TIFB_App.getAppPath: string;
