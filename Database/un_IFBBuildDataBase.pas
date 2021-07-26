@@ -17,8 +17,8 @@ type
      procedure Build;
     { Public declarations }
   protected
-    function existExecScript(const gruid: string):Boolean;
-    function addExecScript(const gruid: string):Boolean;
+    function existExecScript(const AGuid: string):Boolean;
+    function addExecScript(const AGuid: string):Boolean;
     { Public declarations }
   end;
 
@@ -29,9 +29,10 @@ uses
 
 { TIFB_BuildDataBase }
 
-function TIFB_BuildDataBase.addExecScript(const gruid: string): Boolean;
+function TIFB_BuildDataBase.addExecScript(const AGuid: string): Boolean;
 begin
-
+  oApp.oConn.ExecSQL('insert into SYS_EXEC_SCRIPT (ID, DE_GUID, DH_EXEC) '+
+                     '   values ( gen_id(GEN_SYS_EXEC_SCRIPT_ID, 1), '+QuotedStr(AGuid)+', current_timestamp); ');
 end;
 
 procedure TIFB_BuildDataBase.Build;
@@ -99,13 +100,34 @@ begin
     end;
     Close;
     Free;
+    //
+    if not existExecScript('C7F9ABDE-1229-4D17-9D0A-31BDA9668E56') then
+    begin
+      oApp.oConn.addField('SYS_EXEC_SCRIPT', 'DH_EXEC', ftDateTime, 0, False);
+      if oApp.oConn.fieldExist('SYS_EXEC_SCRIPT', 'HE_EXEC') then
+      begin
+        oApp.oConn.ExecSQL('update SYS_EXEC_SCRIPT set DH_EXEC = HE_EXEC where DH_EXEC is null and HE_EXEC is not null');
+        oApp.oConn.ExecSQL('ALTER TABLE SYS_EXEC_SCRIPT DROP HE_EXEC');
+        oApp.oConn.ExecSQL('update SYS_EXEC_SCRIPT set DH_EXEC = current_timestamp where DH_EXEC is null');
+        oApp.oConn.ExecSQL('ALTER TABLE SYS_EXEC_SCRIPT ALTER DH_EXEC SET NOT NULL');
+      end;
+      addExecScript('C7F9ABDE-1229-4D17-9D0A-31BDA9668E56');
+    end;
+
   end;
   //
 end;
 
-function TIFB_BuildDataBase.existExecScript(const gruid: string): Boolean;
+function TIFB_BuildDataBase.existExecScript(const AGuid: string): Boolean;
+const
+  ctSQL = 'select * from SYS_EXEC_SCRIPT where DE_GUID = ';
 begin
-
+  with oApp.oConn.getQuery(ctSQL+ QuotedStr(AGuid)) do
+  begin
+    Open;
+    Result := not IsEmpty;
+    Free;
+  end;
 end;
 
 end.
